@@ -1,5 +1,5 @@
 {
-  "name": "houseplanter",
+  "name": "my-strapi-project",
   "version": "0.1.0",
   "private": true,
   "description": "A Strapi application",
@@ -29,6 +29,6 @@
     "npm": ">=6.0.0"
   },
   "strapi": {
-    "uuid": "87e57714-e7fb-45cc-8f8f-fed9c40d9077"
+    "uuid": "c8bc6a69-7054-44a6-b41e-8491bbeb42cb"
   }
 }
