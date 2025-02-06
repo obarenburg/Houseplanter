@@ -27,7 +27,7 @@ const router = createBrowserRouter ([
     //  errorElement: <ErrorPage />,
   },
   {
-    path: '/collection/plant/:id',
+    path: '/plants/:id',
     element: <PlantInfo />,
     // errorElement: <ErrorPage />,
   },
