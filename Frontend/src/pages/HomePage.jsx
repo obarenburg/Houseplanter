@@ -25,7 +25,7 @@ export default function Home() {
               <img src={orangeCircle} className="h-64 w-64" />
             </div>
 
-            <div className="max-w-2xl  z-10">
+            <div className="max-w-2xl  z-10 ml-8">
               <div className="text-5xl text-left">
                 <StyledText text="grow your dream garden" />
                 <StyledText text="one seed at a time" />
