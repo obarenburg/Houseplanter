@@ -8,8 +8,7 @@ import Timer from './components/Timer/Timer.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     {/* <App /> */}
-      <Gamble/>
-      
+      <App/>
     
   </StrictMode>,
 )

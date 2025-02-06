@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "timers",
+  "info": {
+    "singularName": "timer",
+    "pluralName": "timers",
+    "displayName": "Timer"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "TempTimer": {
+      "type": "biginteger"
+    }
+  }
+}
