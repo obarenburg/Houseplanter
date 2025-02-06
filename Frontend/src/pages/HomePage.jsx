@@ -32,9 +32,9 @@ export default function Home() {
               </div>
 
               <div className="items-center">
-                <button className="mt-6 gap-2 px-4 py-3 font-['Kreon'] bg-[#fbc95d] text-white text-lg font-semibold rounded-[50px] hover:bg-[#fbc95d]/90">
-                  Get Started
-                </button>
+                  <button className="mt-6 gap-2 px-4 py-3 font-['Kreon'] bg-[#fbc95d] text-white text-lg font-semibold rounded-[50px] hover:bg-[#fbc95d]/90">
+                    Get Started
+                  </button>
               </div>
             </div>
           </div>

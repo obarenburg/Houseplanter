@@ -10,7 +10,7 @@ import LogoHover from '../assets/img/houseplanter_logo_hover.png'
 
 export default function Navbar() {
   return (
-    <nav className="bg-[#acceb0] text-white rounded-[9px] p-2 pr-4">
+    <nav className="bg-[#acc48b] text-white rounded-[9px] p-2 pr-4">
       <div className="container mx-auto flex justify-between items-center">
 
         <Link to="/" className="h-20 w-70 object-contain">
@@ -24,10 +24,6 @@ export default function Navbar() {
             className="absolute transition-opacity duration-200 bottom-0 opacity-0 hover:opacity-100"
           />
           </div>
-          {/* <img
-            src={LogoHover}
-            className="ransition-opacity duration-200 opacity-0 hover:opacity-100"
-          /> */}
         </Link>
 
         <ul className="flex space-x-6">
