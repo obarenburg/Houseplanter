@@ -14,10 +14,16 @@ export default function Navbar() {
       <div className="container mx-auto flex justify-between items-center">
 
         <Link to="/" className="h-20 w-70 object-contain">
+          <div className="relative">
           <img
             src={Logo}
             className="transition-opacity duration-200 hover:opacity-0"
           />
+            <img
+            src={LogoHover}
+            className="absolute transition-opacity duration-200 bottom-0 opacity-0 hover:opacity-100"
+          />
+          </div>
           {/* <img
             src={LogoHover}
             className="ransition-opacity duration-200 opacity-0 hover:opacity-100"
