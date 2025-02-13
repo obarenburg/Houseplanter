@@ -110,7 +110,7 @@ function Gamble() {
                     clearInterval(interval);
                 } else {
                     setShowTimer(timeFormat(timeLeft));
-                    setPlantState(stages[Math.min(stageIndex, 6 - 1)]);
+                    setPlantStage(stages[Math.min(stageIndex, 6 - 1)]);
                 }
             }, 1000);
         }
