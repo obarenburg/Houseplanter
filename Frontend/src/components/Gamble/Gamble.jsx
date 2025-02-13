@@ -16,7 +16,7 @@ import axios from "axios";
 const basic_seed_time = 10;
 let startTime = 0;
 
-const API_URL = "http://98.237.188.3:1337/api/timers"
+const API_URL = "https://houseplanter-backend.onrender.com/api/timers"
 const API_TOKEN = "94618f3f1eb34eed8dd3f9b558c6562534dc85d78b4cd0a32bb106ea3d9c0d2baa933b5547b32294473358b4b1662409698d8ff506cec50248a84d4fbdd9a0d3bea7b1afa1b1d792b89e94414fde235f26ac2aa8f914b9ec3674433664bb97b325ace22121f10bf2a6dc9f3cfaa1e0d3d1bab743380e292d575620115c57bf36"
 
 const timeFormat = (input) => {
