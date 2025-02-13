@@ -101,7 +101,7 @@ function Gamble() {
                 const timeDifference = Math.floor((currentTime - startTime) / 1000);
                 const timeLeft = basic_seed_time - timeDifference;
                 const stages = [plantStage1, plantStage2, plantStage3, plantStage4, plantStage5, plantStage6]
-                const stageIndex = Math.floor((basic_seed_time / time_left) * 6);
+                const stageIndex = Math.floor((basic_seed_time / timeLeft) * 6);
 
                 if (timeLeft <= 0) {
                     setButtonState(3);
