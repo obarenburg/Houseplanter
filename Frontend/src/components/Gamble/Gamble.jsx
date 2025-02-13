@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
-import gambleBackground from '../../assets/gambleBackground.svg';
+import gambleBackground from '../../assets/img/background.png';
+import plantStage1 from '../../assets/img/stage_1.png';
+import plantStage2 from '../../assets/img/stage_2.png';
+import plantStage3 from '../../assets/img/stage_3.png';
+import plantStage4 from '../../assets/img/stage_4.png';
+import plantStage5 from '../../assets/img/stage_5.png';
+import plantStage6 from '../../assets/img/stage_6.png';
 import earnBackground from '../../assets/earnPlantBackground.svg';
 import collectedSnakePlant from '../../assets/CollectedSnakePlant.svg';
 import './Gamble.css'
@@ -45,6 +51,7 @@ const postTempTimer = async (tempTimerValue) => {
 
 function Gamble() {
     const [background, setBackground] = useState(gambleBackground);
+    const [plantStage, setPlantStage] = useState(plantStage1);
     const [buttonState, setButtonState] = useState(1);
     const [showTimer, setShowTimer] = useState("Plant");
     const [isCounting, setIsCounting] = useState(false);
@@ -93,6 +100,8 @@ function Gamble() {
                 const currentTime = Date.now();
                 const timeDifference = Math.floor((currentTime - startTime) / 1000);
                 const timeLeft = basic_seed_time - timeDifference;
+                const stages = [plantStage1, plantStage2, plantStage3, plantStage4, plantStage5, plantStage6]
+                const stageIndex = Math.floor((basic_seed_time / time_left) * 6);
 
                 if (timeLeft <= 0) {
                     setButtonState(3);
@@ -101,6 +110,7 @@ function Gamble() {
                     clearInterval(interval);
                 } else {
                     setShowTimer(timeFormat(timeLeft));
+                    setPlantState(stages[Math.min(stageIndex, 6 - 1)]);
                 }
             }, 1000);
         }
@@ -127,6 +137,11 @@ function Gamble() {
                         src={background}
                         alt="Gamble Background" 
                         className="w-full h-full object-cover" 
+                    />
+                    <img 
+                        src={plantStage}
+                        alt="Plant Growth Stage" 
+                        className="absolute w-full h-full bottom-0 object-cover" 
                     />
                 </div>
             </Layout>
