@@ -10,7 +10,7 @@ export default function Collection () {
   const [loading, setLoading] = useState (true);
 
   useEffect (() => {
-    fetch ('http://98.237.188.3:1337/api/plants?populate=*')
+    fetch ('https://houseplanter-backend.onrender.com/api/plants?populate=*')
       .then (response => response.json ())
       .then (data => {
         setPlants (data.data);

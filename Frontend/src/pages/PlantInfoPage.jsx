@@ -13,7 +13,7 @@ export default function PlantInfo () {
 
   useEffect (
     () => {
-      fetch (`http://98.237.188.3:1337/api/plants?filters[id]=${id}&populate=*`)
+      fetch (`https://houseplanter-backend.onrender.com/api/plants?filters[id]=${id}&populate=*`)
         .then (response => response.json ())
         .then (data => {
           if (!data.data || data.data.length === 0) {
