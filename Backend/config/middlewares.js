@@ -13,7 +13,12 @@ module.exports = [
   },
   'strapi::poweredBy',
   'strapi::query',
-  'strapi::body',
+  'strapi::body', {
+    name: 'strapi::upload',
+    config: {
+      path: '/tmp/uploads',
+    },
+  },
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
