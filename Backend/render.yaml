@@ -8,8 +8,8 @@ services:
     healthCheckPath: /_health
     autoDeploy: false
     disk:
-      name: strapi-data
-      mountPath: /data
+      name: strapi-uploads
+      mountPath: /opt/render/project/src/public/uploads
       sizeGB: 1
     envVars:
       - key: NODE_VERSION
