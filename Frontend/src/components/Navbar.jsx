@@ -53,10 +53,10 @@ export default function Navbar() {
           </li>
           <li>
             <Link
-              to="/logout"
+              to="/createUser"
               className="font-['Kreon'] text-2xl text-white font-bold"
             >
-              Logout
+              Sign-Up
             </Link>
           </li>
         </ul>

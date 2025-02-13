@@ -9,6 +9,8 @@ import HomePage from './pages/HomePage';
 import Collection from './pages/CollectionPage';
 import PlantInfo from './pages/PlantInfoPage';
 import Gamble from './components/Gamble/Gamble';
+import LogIn from './pages/LogIn';
+import CreateAccount from './pages/CreateAccount';
 
 // USER
 //import UserPage from "./users/UserPage";
@@ -43,7 +45,7 @@ const router = createBrowserRouter ([
   },
   {
     path: '/login',
-    element: <Collection />,
+    element: <LogIn />,
     // errorElement: <ErrorPage />,
   },
   {
@@ -53,7 +55,7 @@ const router = createBrowserRouter ([
   },
   {
     path: '/createUser',
-    element: <Collection />,
+    element: <CreateAccount />,
     // errorElement: <ErrorPage />,
   },
 ]);

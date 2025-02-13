@@ -6,6 +6,7 @@ import yellowSection from "../assets/svg/yellow-block.svg";
 import greenSection from "../assets/svg/green-block.svg";
 import orangeCircle from "../assets/svg/orange-blob.svg";
 import StyledText from "../components/StyledText";
+import { Link } from 'react-router-dom';
 import Layout from "../Layout";
 
 export default function Home() {
@@ -31,10 +32,10 @@ export default function Home() {
                 <StyledText text="one seed at a time" />
               </div>
 
-              <div className="items-center">
-                  <button className="mt-6 gap-2 px-4 py-3 font-['Kreon'] bg-[#fbc95d] text-white text-lg font-semibold rounded-[50px] hover:bg-[#fbc95d]/90">
+              <div className="items-center flex flex-col">
+                  <Link to="/createUser" className="mt-6 mr-120 gap-2 px-4 py-3 font-['Kreon'] bg-[#fbc95d] text-white text-lg font-semibold rounded-[50px] hover:bg-[#fbc95d]/90">
                     Get Started
-                  </button>
+                  </Link>
               </div>
             </div>
           </div>
@@ -55,11 +56,8 @@ export default function Home() {
               </div>
 
               <p className="text-left  max-w-prose">
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
+              <b>Houseplanter</b> is a relaxing browser game about planting seeds and collecting cool plants. Start with <b>Common Seeds</b> seeds and collect your way up to <b>Rare Seeds </b> 
+               to find the most desired plants! Head over to the shop to purchase your first seeds today
               </p>
             </div>
             <div
@@ -77,11 +75,8 @@ export default function Home() {
               </div>
 
               <p className="text-left  max-w-prose">
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
+               <b>Houseplanter</b> is not just about collecting plants though! You also also look closer at your plants int the collection to check out some real world facts. These include
+              care information for their real world counter parts, such as <b>Watering Times</b>, <b>Sun Light Requirements</b> and <b>Preferred Climate!</b>
               </p>
             </div>
             <div
@@ -95,15 +90,12 @@ export default function Home() {
               }}
             >
               <div className="flex justify-start mb-8 text-5xl">
-                <StyledText text="plant page" />
+                <StyledText text="garden" />
               </div>
 
               <p className="text-left  max-w-prose">
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
-                Lorem ipsum dolor sit amet... Lorem ipsum dolor sit amet...
+                The <b>Garden</b> page is your relaxation space where you can watch your plants grow over time! Once the timer is up the <b>Mystery Plant</b> is ready to harvest. What will it be? Only one
+                way to find out!
               </p>
             </div>
           </section>
