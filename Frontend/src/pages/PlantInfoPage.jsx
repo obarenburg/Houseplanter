@@ -49,7 +49,7 @@ export default function PlantInfo () {
   } = plant;
 
   const imageUrl = image && image.length > 0
-    ? `http://98.237.188.3:1337${image[0].url}`
+    ? `https://houseplanter-backend.onrender.com${image[0].url}`
     : null;
 
   return (
