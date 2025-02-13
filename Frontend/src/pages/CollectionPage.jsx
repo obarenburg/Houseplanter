@@ -42,7 +42,7 @@ export default function Collection () {
           {plants.map (plant => {
             // Extract the first image from the array
             const imageUrl = plant.image && plant.image.length > 0
-              ? `https://houseplanter-backend.onrender.com${plant.image[0].url}`
+              ? `${plant.image[0].url}`
               : null;
 
             return (
