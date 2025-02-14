@@ -11,6 +11,7 @@ import PlantInfo from './pages/PlantInfoPage';
 import Gamble from './components/Gamble/Gamble';
 import LogIn from './pages/LogIn';
 import CreateAccount from './pages/CreateAccount';
+import ShopPage from './pages/ShopPage';
 
 // USER
 //import UserPage from "./users/UserPage";
@@ -35,7 +36,7 @@ const router = createBrowserRouter ([
   },
   {
     path: '/shop',
-    element: <Collection />,
+    element: <ShopPage />,
     // errorElement: <ErrorPage />,
   },
   {

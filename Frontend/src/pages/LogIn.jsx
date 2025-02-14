@@ -2,11 +2,41 @@
 import React from 'react'
 import Layout from '../Layout'
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import bgGrid from "../assets/svg/background-checks.svg";
 import logIn from "../assets/sign-in.svg";
 
 const LogIn = () => {
+    const [message, setMessage] = useState(null);
+
+  const login = async (event) => {
+    event.preventDefault();
+    setMessage(null);
+    const formData = new FormData(event.target);
+    const jsonData = Object.fromEntries(formData);
+
+    const reqOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(jsonData)
+    };
+
+    const req = await fetch('https://houseplanter-backend.onrender.com/api/auth/local', reqOptions);
+    const res = await req.json();
+
+    if (res.error) {
+      setMessage(res.error.message);
+      return;
+    }
+
+    if (res.jwt && res.user) {
+      setMessage('Login successfull.');
+    }
+  };
+
     return (
         <div>
             <Layout>
@@ -37,12 +67,15 @@ const LogIn = () => {
                             <br /> sign-up!
                             </Link>
     
+                            <form onSubmit={login}>
                             <div className="w-[412px] left-[160px] top-[190px] absolute">
                                 <label className="text-white text-[28px] font-bold font-['Kreon']">
                                     Enter username
                                 </label>
                                 <input
-                                    type="text"
+                                    type="text" 
+                                    id="identifier" 
+                                    name="identifier"
                                     placeholder="username"
                                     className="w-[412px] h-[27px] bg-white rounded-xl text-[#ccd4c5] text-2xl font-bold font-['Kreon'] px-3"
                                 />
@@ -53,11 +86,21 @@ const LogIn = () => {
                                     Enter password
                                 </label>
                                 <input
-                                    type="password"
+                                    type="password" 
+                                    id="password"
+                                    name="password" 
                                     placeholder="password"
                                     className="w-[412px] h-[27px] bg-white rounded-xl text-[#ccd4c5] text-2xl font-bold font-['Kreon'] px-3"
                                 />
                             </div>
+                            <button type="submit">Submit</button>
+
+                            <div>{ message }</div>
+
+                            </form>
+
+                           
+
                         </div>
                     </div>
     

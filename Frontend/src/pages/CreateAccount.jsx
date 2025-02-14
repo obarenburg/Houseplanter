@@ -1,11 +1,43 @@
+/* eslint-disable no-unused-vars */
 import React from 'react'
 import Layout from '../Layout'
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import bgGrid from "../assets/svg/background-checks.svg";
 import createAccount from "../assets/createaccount.svg";
 
 const CreateAccount = () => {
+    const [message, setMessage] = useState(null);
+    
+    const register = async (event) => {
+        event.preventDefault();
+        setMessage(null);
+        
+        const formData = new FormData(event.target);
+        const jsonData = Object.fromEntries(formData);
+    
+        const reqOptions = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(jsonData)
+        };
+    
+        const req = await fetch('https://houseplanter-backend.onrender.com/api/auth/local/register', reqOptions);
+        const res = await req.json();
+    
+        if (res.error) {
+          setMessage(res.error.message);
+          return;
+        }
+    
+        if (res.jwt && res.user) {
+          setMessage('Successfull registration.');
+        }
+      };
+
   return (
     <div>
         <Layout>
@@ -35,38 +67,55 @@ const CreateAccount = () => {
                         <br /> sign-in
                         </Link>
 
+                        
+                        <form onSubmit={register}>
+
                         <div className="w-[412px] left-[160px] top-[150px] absolute">
                             <label className="text-white text-[28px] font-bold font-['Kreon']">
-                                Create a username
+                                Enter email
                             </label>
                             <input
-                                type="text"
-                                placeholder="username"
+                                type="text" 
+                                id="email" 
+                                name="email" 
+                                placeholder="email"
                                 className="w-[412px] h-[27px] bg-white rounded-xl text-[#ccd4c5] text-2xl font-bold font-['Kreon'] px-3"
                             />
                         </div>
 
                         <div className="w-[412px] left-[161px] top-[245px] absolute">
                             <label className="text-white text-[28px] font-bold font-['Kreon']">
-                                Create a password
+                                Create a username
                             </label>
                             <input
-                                type="password"
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                placeholder="username"
+                                className="w-[412px] h-[27px] bg-white rounded-xl text-[#ccd4c5] text-2xl font-bold font-['Kreon'] px-3"
+                            />
+                        </div>
+                        
+
+                        <div className="w-[412px] left-[163px] top-[330px] absolute">
+                            <label className="text-white text-[28px] font-bold font-['Kreon']">
+                            Create a password
+                            </label>
+                            <input
+                                type="password" 
+                                id="password"
+                                name="password" 
                                 placeholder="password"
                                 className="w-[412px] h-[27px] bg-white rounded-xl text-[#ccd4c5] text-2xl font-bold font-['Kreon'] px-3"
                             />
                         </div>
 
-                        <div className="w-[412px] left-[163px] top-[330px] absolute">
-                            <label className="text-white text-[28px] font-bold font-['Kreon']">
-                                Confirm password
-                            </label>
-                            <input
-                                type="password"
-                                placeholder="password"
-                                className="w-[412px] h-[27px] bg-white rounded-xl text-[#ccd4c5] text-2xl font-bold font-['Kreon'] px-3"
-                            />
-                        </div>
+                        <button type="submit">Submit</button>
+
+                        <div>{ message }</div>
+
+                        </form>
+
                     </div>
                 </div>
 
