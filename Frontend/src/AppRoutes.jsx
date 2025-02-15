@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+import {createBrowserRouter, RouterProvider, Navigate} from 'react-router-dom';
+import {useAuth} from './AuthContext';
 
 // HOME
 import HomePage from './pages/HomePage';
@@ -16,6 +18,14 @@ import ShopPage from './pages/ShopPage';
 // USER
 //import UserPage from "./users/UserPage";
 
+// add error page!
+
+const ProtectedRoute = ({children}) => {
+  const {user} = useAuth ();
+  console.log ('[ProtectedRoute] Checking access for user:', user);
+  return user ? children : <Navigate to="/login" />;
+};
+
 const router = createBrowserRouter ([
   // HOME
   {
@@ -26,32 +36,27 @@ const router = createBrowserRouter ([
   // plant
   {
     path: '/collection',
-    element: <Collection />,
+    element: <ProtectedRoute> <Collection /> </ProtectedRoute>,
     //  errorElement: <ErrorPage />,
   },
   {
     path: '/plants/:id',
-    element: <PlantInfo />,
+    element: <ProtectedRoute>  <PlantInfo /> </ProtectedRoute>,
     // errorElement: <ErrorPage />,
   },
   {
     path: '/shop',
-    element: <ShopPage />,
+    element: <ProtectedRoute>  <ShopPage /> </ProtectedRoute>,
     // errorElement: <ErrorPage />,
   },
   {
     path: '/garden',
-    element: <Gamble />,
+    element: <ProtectedRoute>  <Gamble /> </ProtectedRoute>,
     // errorElement: <ErrorPage />,
   },
   {
     path: '/login',
     element: <LogIn />,
-    // errorElement: <ErrorPage />,
-  },
-  {
-    path: '/logout',
-    element: <Collection />,
     // errorElement: <ErrorPage />,
   },
   {
