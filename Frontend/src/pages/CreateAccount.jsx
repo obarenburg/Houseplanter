@@ -41,7 +41,7 @@ const CreateAccount = () => {
     }
 
     if (res.jwt && res.user) {
-      toast.success ('Successfully registered!');
+      toast.success ('Registered successfully!');
       login (res);
       navigate ('/');
     }

@@ -41,7 +41,7 @@ const LogIn = () => {
     }
 
     if (res.jwt && res.user) {
-      toast.success ('Login registered!');
+      toast.success ('Login successful!');
       login (res);
       navigate ('/');
     }
