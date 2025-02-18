@@ -13,7 +13,7 @@ import Timer from '../Timer/Timer';
 import Layout from '../../Layout';
 import axios from "axios";
 
-const basic_seed_time = 10;
+const basic_seed_time = 20;
 let startTime = 0;
 
 const API_URL = "https://houseplanter-backend.onrender.com/api/timers"
@@ -62,6 +62,7 @@ function Gamble() {
             console.log("hi")
         } else if (buttonState == 3) {
             setBackground(earnBackground);
+            setPlantStage(0);
             setButtonState(4);
         } else {
             startTime = Date.now();
