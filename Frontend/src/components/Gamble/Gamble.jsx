@@ -141,7 +141,7 @@ function Gamble() {
                     />
                     <img 
                         src={plantStage}
-                        alt="Plant Growth Stage" 
+                        alt="" 
                         className="absolute w-full h-full bottom-0 object-cover" 
                     />
                 </div>
