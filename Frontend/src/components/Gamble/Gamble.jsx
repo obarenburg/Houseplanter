@@ -51,7 +51,7 @@ const postTempTimer = async (tempTimerValue) => {
 
 function Gamble() {
     const [background, setBackground] = useState(gambleBackground);
-    const [plantStage, setPlantStage] = useState(plantStage1);
+    const [plantStage, setPlantStage] = useState(0);
     const [buttonState, setButtonState] = useState(1);
     const [showTimer, setShowTimer] = useState("Plant");
     const [isCounting, setIsCounting] = useState(false);
