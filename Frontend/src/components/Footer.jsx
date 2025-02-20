@@ -9,7 +9,7 @@ const credits = {
 
 function Footer () {
   return (
-    <div className="bg-[#acceb0] text-white p-4  rounded-[9px]">
+    <div className="bg-[#acceb0] text-white p-4  rounded-b-[9px]">
       <div className="container mx-auto flex justify-between items-center">
         <h3 className="text-xl text-white font-bold font-['Kreon']">
           Made with ♥ by
