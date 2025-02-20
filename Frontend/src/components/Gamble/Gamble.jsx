@@ -151,6 +151,7 @@ function Gamble() {
                     clearInterval(interval);
                 } else {
                     setTimerValue(timeFormat(timeLeft));
+                    setPotState(commonPot);
                 }
             }, 1000);
         }
