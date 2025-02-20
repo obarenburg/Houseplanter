@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect} from 'react';
 import { useAuth } from '../../AuthContext';
 import gambleBackground from '../../assets/img/window.png';
 import emptyPot from '../../assets/img/empty_pot.png';
@@ -13,11 +13,11 @@ import tutorialBird from '../../assets/img/bird.png';
 import tutorialBirdNews from '../../assets/img/bird_news.png';
 import earnBackground from '../../assets/earnPlantBackground.svg';
 import collectedSnakePlant from '../../assets/CollectedSnakePlant.svg';
-import birdSound1 from '../../assets/sounds/bird_1.mp3';
 import './Gamble.css'
 import Timer from '../Timer/Timer';
 import Layout from '../../Layout';
 import axios from "axios";
+import tutorialBird from './tutorial';
 
 const basic_seed_time = 20;
 let startTime = 0;
@@ -72,17 +72,11 @@ function Gamble() {
     const { user, logout } = useAuth();
     const [background, setBackground] = useState(gambleBackground);
     const [potState, setPotState] = useState(emptyPot);
+    const [birdState, setBirdState] = useState(tutorialBird);
     const [buttonState, setButtonState] = useState(1);
     const [showTimer, setShowTimer] = useState("Plant");
     const [isCounting, setIsCounting] = useState(false);
 
-    const birdSounds = () => {
-        const audioRef = useRef(new Audio(birdSound1));
-      
-        const playSound = () => {
-          audioRef.current.play();
-        };
-    }
     const plantSeed = () => {
         // Need to send this to the server
         if (isCounting) {
@@ -186,13 +180,7 @@ function Gamble() {
                         alt="" 
                         className="absolute w-full h-full bottom-0 object-cover" 
                     />
-                    <img
-                        src={tutorialBird}
-                        alt="Clickable"
-                        onClick={playSound}
-                        style={{ cursor: "pointer", width: "200px" }}
-                        className="absolute w-full h-full bottom-0 object-cover" 
-                    />
+                    <tutorialBird />
                 </div>
             </Layout>
         </>
