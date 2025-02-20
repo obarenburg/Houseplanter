@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "inventory_items",
+  "info": {
+    "singularName": "inventory-item",
+    "pluralName": "inventory-items",
+    "displayName": "inventoryItem"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::user-game-data.user-game-data",
+      "inversedBy": "inventory_items"
+    },
+    "itemName": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    }
+  }
+}

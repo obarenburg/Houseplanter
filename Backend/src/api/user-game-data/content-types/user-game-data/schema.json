@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_game_datas",
+  "info": {
+    "singularName": "user-game-data",
+    "pluralName": "user-game-datas",
+    "displayName": "userGameData",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_game_data"
+    },
+    "money": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    },
+    "user_plants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-plant.user-plant",
+      "mappedBy": "user"
+    },
+    "inventory_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::inventory-item.inventory-item",
+      "mappedBy": "user"
+    }
+  }
+}
