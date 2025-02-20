@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import React from 'react';
+//import React from 'react';
 import { useAuth } from '../../AuthContext';
 import gambleBackground from '../../assets/img/window.png';
 import emptyPot from '../../assets/img/empty_pot.png';
@@ -12,7 +12,7 @@ import './Gamble.css'
 import Timer from '../Timer/Timer';
 import Layout from '../../Layout';
 import axios from "axios";
-import tutorialBird from './tutorial';
+//import tutorialBird from './tutorial';
 
 let BASIC_SEED_TIME = 600;
 const PLANT_ID = "f8tui9y5dtiexx6hhn2v48jp";

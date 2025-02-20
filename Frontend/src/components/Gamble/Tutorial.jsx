@@ -1,6 +1,6 @@
-import React from "react";
+//import React from "react";
 
-const tutorialBird = () => {
+//const tutorialBird = () => {
     //const playSound = () => {
     //    const audio = new Audio("../../assets/sounds/bird_1.mp3");
     //    audio.play();
@@ -14,7 +14,7 @@ const tutorialBird = () => {
     //        style={{ cursor: "pointer", width: "200px" }}
     //    />
     //);
-    return "Bird"
-};
+    //return "Bird"
+//};
 
-export default tutorialBird;
+//export default tutorialBird;
