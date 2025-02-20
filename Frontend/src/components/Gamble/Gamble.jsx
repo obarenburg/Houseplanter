@@ -198,5 +198,6 @@ function Gamble() {
         </>
     );
 }
+}
 
 export default Gamble;
