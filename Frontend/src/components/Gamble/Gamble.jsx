@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import gambleBackground from '../../assets/img/window.png';
 import emptyPot from '../../assets/img/empty_pot.png';
 import commonPot from '../../assets/img/common_pot.png';
@@ -12,6 +12,7 @@ import tutorialBird from '../../assets/img/bird.png';
 import tutorialBirdNews from '../../assets/img/bird_news.png';
 import earnBackground from '../../assets/earnPlantBackground.svg';
 import collectedSnakePlant from '../../assets/CollectedSnakePlant.svg';
+import birdSound1 from '../../assets/sounds/bird_1.mp3';
 import './Gamble.css'
 import Timer from '../Timer/Timer';
 import Layout from '../../Layout';
@@ -72,7 +73,14 @@ function Gamble() {
     const [buttonState, setButtonState] = useState(1);
     const [showTimer, setShowTimer] = useState("Plant");
     const [isCounting, setIsCounting] = useState(false);
-    
+
+    const birdSounds = () => {
+        const audioRef = useRef(new Audio(birdSound1));
+      
+        const playSound = () => {
+          audioRef.current.play();
+        };
+
     const plantSeed = () => {
         // Need to send this to the server
         if (isCounting) {
@@ -144,7 +152,7 @@ function Gamble() {
 
         return () => clearInterval(interval);
     }, [isCounting]);
-
+    
     return (
         <>
             <Layout>
@@ -177,6 +185,13 @@ function Gamble() {
                     <img 
                         src={potstate}
                         alt="" 
+                        className="absolute w-full h-full bottom-0 object-cover" 
+                    />
+                    <img
+                        src={tutorialBird}
+                        alt="Clickable"
+                        onClick={playSound}
+                        style={{ cursor: "pointer", width: "200px" }}
                         className="absolute w-full h-full bottom-0 object-cover" 
                     />
                 </div>
