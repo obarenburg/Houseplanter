@@ -3,7 +3,9 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../AuthContext';
 import gambleBackground from '../../assets/img/window.png';
 import emptyPot from '../../assets/img/empty_pot.png';
+import commonPot from '../../assets/img/common_pot.png';
 import windowMonstera from '../../assets/img/window_monstera.png';
+import windowSnakePlant from '../../assets/img/window_snake_plant.png';
 import snakePlant from '../../assets/img/snake_plant.png';
 import monsteraPlant from '../../assets/img/monstera.png';
 import earnBackground from '../../assets/earnPlantBackground.svg';
@@ -118,13 +120,14 @@ function Gamble() {
             const timeLeft = BASIC_SEED_TIME - timeDifference;
 
             if (timeLeft <= 0) {
-                setPotState(windowMonstera);
+                setPotState(windowSnakePlant);
                 setButtonText("Get");
                 setTimerValue("Get");
             } else {
                 setStartTime(dbTime);
                 setIsCounting(true);
                 setTimerValue(timeFormat(timeLeft));
+                setPotState(commonPot);
             }
         };
 
@@ -142,7 +145,7 @@ function Gamble() {
 
                 if (timeLeft <= 0) {
                     setIsCounting(false);
-                    setPotState(windowMonstera);
+                    setPotState(windowSnakePlant);
                     setButtonText("Get");
                     setTimerValue("Get");
                     clearInterval(interval);
