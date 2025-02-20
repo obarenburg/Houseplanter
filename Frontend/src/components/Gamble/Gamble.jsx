@@ -82,7 +82,7 @@ function Gamble() {
         const playSound = () => {
           audioRef.current.play();
         };
-
+    }
     const plantSeed = () => {
         // Need to send this to the server
         if (isCounting) {
@@ -197,7 +197,6 @@ function Gamble() {
             </Layout>
         </>
     );
-}
 }
 
 export default Gamble;
