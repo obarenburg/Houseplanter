@@ -16,9 +16,9 @@ import Layout from '../../Layout';
 import axios from "axios";
 //import tutorialBird from './tutorial';
 
-let BASIC_SEED_TIME = 600;
+let BASIC_SEED_TIME = 180;
 const PLANT_ID = "f8tui9y5dtiexx6hhn2v48jp";
-const COLLECTION_DISPLAY_TIME = 4000; // Seconds you want * 1000
+const COLLECTION_DISPLAY_TIME = 3000; // Seconds you want * 1000
 const API_TOKEN = "94ca66a92ee238641c1b3ea83c833229e7573835775f2d63b8f897be81344933de76b5fc51aeb222b9b4e91971f1724699e17449d8e089b82b00b11457914f1704c5439bbf2a7c8c34d49849c02c2c292d9eec820651165d60fbd7a2e03ef14edd70151f2f0a9667506c47081855d91531fdf7949021066b352d7a6897c0ed91";
 const API_URL = "https://houseplanter-backend.onrender.com/api/user-plants/";
 
