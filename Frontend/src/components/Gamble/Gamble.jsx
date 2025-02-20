@@ -137,7 +137,7 @@ function Gamble() {
                     <img 
                         src={background}
                         alt="Gamble Background" 
-                        className="w-full h-full object-cover" 
+                        className="w-[40vw] h-full object-cover" 
                     />
                     <img 
                         src={plantStage}
