@@ -113,7 +113,7 @@ const LogIn = () => {
                     <button
                       className="w-[125px] h-[50px] px-4 py-2 bg-[#fa9768] rounded-[50px] shadow-[0px_1px_2px_0px_rgba(13,13,18,0.06)] 
                         justify-center items-center gap-2 inline-flex text-center text-white text-2xl font-semibold font-['Kreon'] 
-                        leading-[37.20px]"
+                        leading-[37.20px] cursor-pointer hover:bg-[#acc48b]" 
                       type="submit"
                     >
                       Submit

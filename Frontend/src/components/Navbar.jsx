@@ -32,7 +32,7 @@ export default function Navbar() {
               <li><Link to="/garden" className="font-['Kreon'] text-2xl text-white font-bold">Garden</Link></li>
               <li><Link to="/collection" className="font-['Kreon'] text-2xl text-white font-bold">Collection</Link></li>
               <li><Link to="/shop" className="font-['Kreon'] text-2xl text-white font-bold">Shop</Link></li>
-              <li><button onClick={() => { console.log('[Navbar] User logged out'); logout(); }} className="font-['Kreon'] text-2xl text-white font-bold">Sign-Out</button></li>
+              <li><button onClick={() => { console.log('[Navbar] User logged out'); logout(); }} className="cursor-pointer hover:text-[#89926D] font-['Kreon'] text-2xl text-white font-bold">Sign-Out</button></li>
             </>
           ) : (
             <>

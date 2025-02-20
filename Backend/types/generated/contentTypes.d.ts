@@ -534,6 +534,47 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiInventoryItemInventoryItem
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'inventory_items';
+  info: {
+    displayName: 'inventoryItem';
+    pluralName: 'inventory-items';
+    singularName: 'inventory-item';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    itemName: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::inventory-item.inventory-item'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    quantity: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::user-game-data.user-game-data'
+    >;
+  };
+}
+
 export interface ApiPlantPlant extends Struct.CollectionTypeSchema {
   collectionName: 'plants';
   info: {
@@ -597,6 +638,35 @@ export interface ApiTestTest extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiTestingTesting extends Struct.CollectionTypeSchema {
+  collectionName: 'testings';
+  info: {
+    displayName: 'testing';
+    pluralName: 'testings';
+    singularName: 'testing';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::testing.testing'
+    > &
+      Schema.Attribute.Private;
+    longText: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    shortText: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiTimerTimer extends Struct.CollectionTypeSchema {
   collectionName: 'timers';
   info: {
@@ -619,6 +689,90 @@ export interface ApiTimerTimer extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiUserGameDataUserGameData
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'user_game_datas';
+  info: {
+    description: '';
+    displayName: 'userGameData';
+    pluralName: 'user-game-datas';
+    singularName: 'user-game-data';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    inventory_items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::inventory-item.inventory-item'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-game-data.user-game-data'
+    > &
+      Schema.Attribute.Private;
+    money: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    user_plants: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-plant.user-plant'
+    >;
+  };
+}
+
+export interface ApiUserPlantUserPlant extends Struct.CollectionTypeSchema {
+  collectionName: 'user_plants';
+  info: {
+    description: '';
+    displayName: 'userPlant';
+    pluralName: 'user-plants';
+    singularName: 'user-plant';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    harvestable: Schema.Attribute.Boolean;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-plant.user-plant'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    TimerStartTime: Schema.Attribute.BigInteger &
+      Schema.Attribute.DefaultTo<'0'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::user-game-data.user-game-data'
+    >;
   };
 }
 
@@ -1112,6 +1266,10 @@ export interface PluginUsersPermissionsUser
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_game_data: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::user-game-data.user-game-data'
+    >;
     username: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique &
@@ -1136,9 +1294,13 @@ declare module '@strapi/strapi' {
       'api::author.author': ApiAuthorAuthor;
       'api::category.category': ApiCategoryCategory;
       'api::global.global': ApiGlobalGlobal;
+      'api::inventory-item.inventory-item': ApiInventoryItemInventoryItem;
       'api::plant.plant': ApiPlantPlant;
       'api::test.test': ApiTestTest;
+      'api::testing.testing': ApiTestingTesting;
       'api::timer.timer': ApiTimerTimer;
+      'api::user-game-data.user-game-data': ApiUserGameDataUserGameData;
+      'api::user-plant.user-plant': ApiUserPlantUserPlant;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

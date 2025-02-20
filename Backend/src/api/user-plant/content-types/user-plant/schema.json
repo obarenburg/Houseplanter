@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_plants",
+  "info": {
+    "singularName": "user-plant",
+    "pluralName": "user-plants",
+    "displayName": "userPlant",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::user-game-data.user-game-data",
+      "inversedBy": "user_plants"
+    },
+    "harvestable": {
+      "type": "boolean"
+    },
+    "TimerStartTime": {
+      "type": "biginteger",
+      "default": "0"
+    }
+  }
+}

@@ -20,8 +20,8 @@ import axios from "axios";
 const basic_seed_time = 20;
 let startTime = 0;
 
-const API_URL = "https://houseplanter-backend.onrender.com/api/timers"
-const API_TOKEN = "94618f3f1eb34eed8dd3f9b558c6562534dc85d78b4cd0a32bb106ea3d9c0d2baa933b5547b32294473358b4b1662409698d8ff506cec50248a84d4fbdd9a0d3bea7b1afa1b1d792b89e94414fde235f26ac2aa8f914b9ec3674433664bb97b325ace22121f10bf2a6dc9f3cfaa1e0d3d1bab743380e292d575620115c57bf36"
+const API_URL = "https://houseplanter-backend.onrender.com/api/user-plants/";
+const API_TOKEN = "94ca66a92ee238641c1b3ea83c833229e7573835775f2d63b8f897be81344933de76b5fc51aeb222b9b4e91971f1724699e17449d8e089b82b00b11457914f1704c5439bbf2a7c8c34d49849c02c2c292d9eec820651165d60fbd7a2e03ef14edd70151f2f0a9667506c47081855d91531fdf7949021066b352d7a6897c0ed91"
 
 const timeFormat = (input) => {
     const minutes = Math.floor(input/60);
@@ -29,31 +29,44 @@ const timeFormat = (input) => {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 };
 
-const postTempTimer = async (tempTimerValue) => {
+const updatePlantedAt = async (plantId, newPlantedAt) => {
     try {
-        const response = await axios.post(
-        API_URL, 
-        {
-            data: {
-            TempTimer: tempTimerValue,
-            },
+      const response = await axios.put(`${API_URL}${plantId}`, {
+        data: {
+          plantedAt: newPlantedAt,
         },
-        {
-            headers: {
-            "Authorization": `Bearer ${API_TOKEN}`,
-            "Content-Type": "application/json",
-            },
-        }
-        );
-
-        console.log("Successfully posted:", response.data);
+      }, {
+        headers: {
+          Authorization: `Bearer ${API_TOKEN}`,
+        },
+      });
+      console.log("Update successful:", response.data);
+      return response.data;
     } catch (error) {
-        console.error("Error posting data:", error);
+      console.error("Error updating plantedAt:", error);
+      throw error;
     }
+  };
+
+const getPlantedAt = async (plantId) => {
+try {
+    const response = await axios.get(`${API_URL}${plantId}`, {
+    headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+    },
+    });
+    console.log("Fetch successful:", response.data);
+    return response.data.plantedAt; // Assuming plantedAt is part of the returned data
+} catch (error) {
+    console.error("Error fetching plantedAt:", error);
+    throw error;
+}
 };
+  
   
 
 function Gamble() {
+    const { user, logout } = useAuth();
     const [background, setBackground] = useState(gambleBackground);
     const [potState, setPotState] = useState(emptyPot);
     const [buttonState, setButtonState] = useState(1);
@@ -66,13 +79,23 @@ function Gamble() {
             console.log("hi")
         } else if (buttonState == 3) {
             setBackground(earnBackground);
-            setPlantStage(0);
+            setPotState(0);
             setButtonState(4);
         } else {
             startTime = Date.now();
             console.log(startTime);
             postTempTimer(startTime);
             setPotState(commonPot);
+            let db_time = getPlantedAt(); // with the plant ID
+            if (db_time == 0) { // with the plant ID
+                startTime = Date.now();
+                console.log(startTime);
+                updatePlantedAt(plantId, startTime); // with the plant ID
+            } else {
+                startTime = db_time;
+                console.log(startTime);
+                console.log("Got from the DB");
+            }
             setShowTimer(timeFormat(basic_seed_time));
             setIsCounting(true);
             console.log(isCounting);
@@ -125,6 +148,15 @@ function Gamble() {
     return (
         <>
             <Layout>
+                <div>
+                    {user.user ? (
+                        <>
+                        <h1 className='text-black'>Welcome, {user.user.username}!</h1>
+                        </>
+                    ) : (
+                        <h1>Not logged in</h1>
+                    )}
+                </div>
                 <div className="relative w-full h-full">
                     {apiTimer.map((apiTimer) => (
                     <p key={apiTimer.id} className="text-black text-lg font-bold">
