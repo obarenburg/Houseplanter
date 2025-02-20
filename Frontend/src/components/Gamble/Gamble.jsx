@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../AuthContext';
 import gambleBackground from '../../assets/img/window.png';
 import emptyPot from '../../assets/img/empty_pot.png';
 import commonPot from '../../assets/img/common_pot.png';
@@ -83,17 +84,9 @@ function Gamble() {
             setPotState(0);
             setButtonState(4);
         } else {
-<<<<<<< HEAD
             console.log("Started");
             let plant_id = "f8tui9y5dtiexx6hhn2v48jp";
             let db_time = getPlantedAt(plant_id); // with the plant ID
-=======
-            startTime = Date.now();
-            console.log(startTime);
-            postTempTimer(startTime);
-            setPotState(commonPot);
-            let db_time = getPlantedAt(); // with the plant ID
->>>>>>> 8266d96fbc6322d007334aeda4eab7130279f7b5
             if (db_time == 0) { // with the plant ID
                 startTime = Date.now();
                 console.log(startTime);
@@ -181,7 +174,7 @@ function Gamble() {
                         className="w-[40vw] h-full object-cover" 
                     />
                     <img 
-                        src={potstate}
+                        src={potState}
                         alt="" 
                         className="absolute w-full h-full bottom-0 object-cover" 
                     />
