@@ -4,7 +4,8 @@
   "info": {
     "singularName": "user-plant",
     "pluralName": "user-plants",
-    "displayName": "userPlant"
+    "displayName": "userPlant",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -17,11 +18,11 @@
       "target": "api::user-game-data.user-game-data",
       "inversedBy": "user_plants"
     },
-    "plantedAt": {
-      "type": "datetime"
-    },
     "harvestable": {
       "type": "boolean"
+    },
+    "plantedAt": {
+      "type": "biginteger"
     }
   }
 }

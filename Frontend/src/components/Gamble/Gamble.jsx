@@ -18,8 +18,8 @@ import axios from "axios";
 const basic_seed_time = 20;
 let startTime = 0;
 
-const API_URL = "https://houseplanter-backend.onrender.com/api/timers"
-const API_TOKEN = "62505b41c2eed43dec696c86bfa0cf7ca5997c4e1e5433ed58f3f1b535e93d26470d09bf579b2cae6661dd0f8a36276c42623c8a52f37433653f4ff04c452e96aefaee5c182117a241ebcae0cf86fd6fb2828ed7a9411d27ef08a76f1453dff693a40b785b362d6fec13867fc3f333f35820dd4802290792d4490636e057b942"
+const API_URL = "https://houseplanter-backend.onrender.com/api/user-plants/";
+const API_TOKEN = "94ca66a92ee238641c1b3ea83c833229e7573835775f2d63b8f897be81344933de76b5fc51aeb222b9b4e91971f1724699e17449d8e089b82b00b11457914f1704c5439bbf2a7c8c34d49849c02c2c292d9eec820651165d60fbd7a2e03ef14edd70151f2f0a9667506c47081855d91531fdf7949021066b352d7a6897c0ed91"
 
 const timeFormat = (input) => {
     const minutes = Math.floor(input/60);
@@ -27,28 +27,40 @@ const timeFormat = (input) => {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 };
 
-const postTempTimer = async (tempTimerValue) => {
+const updatePlantedAt = async (plantId, newPlantedAt) => {
     try {
-        const response = await axios.post(
-        API_URL, 
-        {
-            data: {
-            TempTimer: tempTimerValue,
-            },
+      const response = await axios.put(`${API_URL}${plantId}`, {
+        data: {
+          plantedAt: newPlantedAt,
         },
-        {
-            headers: {
-            "Authorization": `Bearer ${API_TOKEN}`,
-            "Content-Type": "application/json",
-            },
-        }
-        );
-
-        console.log("Successfully posted:", response.data);
+      }, {
+        headers: {
+          Authorization: `Bearer ${API_TOKEN}`,
+        },
+      });
+      console.log("Update successful:", response.data);
+      return response.data;
     } catch (error) {
-        console.error("Error posting data:", error);
+      console.error("Error updating plantedAt:", error);
+      throw error;
     }
+  };
+
+const getPlantedAt = async (plantId) => {
+try {
+    const response = await axios.get(`${API_URL}${plantId}`, {
+    headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+    },
+    });
+    console.log("Fetch successful:", response.data);
+    return response.data.plantedAt; // Assuming plantedAt is part of the returned data
+} catch (error) {
+    console.error("Error fetching plantedAt:", error);
+    throw error;
+}
 };
+  
   
 
 function Gamble() {
@@ -68,9 +80,16 @@ function Gamble() {
             setPlantStage(0);
             setButtonState(4);
         } else {
-            startTime = Date.now();
-            console.log(startTime);
-            postTempTimer(startTime);
+            let db_time = getPlantedAt(); // with the plant ID
+            if (db_time == 0) { // with the plant ID
+                startTime = Date.now();
+                console.log(startTime);
+                updatePlantedAt(plantId, startTime); // with the plant ID
+            } else {
+                startTime = db_time;
+                console.log(startTime);
+                console.log("Got from the DB");
+            }
             setShowTimer(timeFormat(basic_seed_time));
             setIsCounting(true);
             console.log(isCounting);

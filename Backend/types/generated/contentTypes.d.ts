@@ -744,6 +744,7 @@ export interface ApiUserGameDataUserGameData
 export interface ApiUserPlantUserPlant extends Struct.CollectionTypeSchema {
   collectionName: 'user_plants';
   info: {
+    description: '';
     displayName: 'userPlant';
     pluralName: 'user-plants';
     singularName: 'user-plant';
@@ -762,7 +763,7 @@ export interface ApiUserPlantUserPlant extends Struct.CollectionTypeSchema {
       'api::user-plant.user-plant'
     > &
       Schema.Attribute.Private;
-    plantedAt: Schema.Attribute.DateTime;
+    plantedAt: Schema.Attribute.BigInteger;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
