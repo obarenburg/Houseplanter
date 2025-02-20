@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
-import gambleBackground from '../../assets/img/background.png';
-import plantStage1 from '../../assets/img/stage_1.png';
-import plantStage2 from '../../assets/img/stage_2.png';
-import plantStage3 from '../../assets/img/stage_3.png';
-import plantStage4 from '../../assets/img/stage_4.png';
-import plantStage5 from '../../assets/img/stage_5.png';
-import plantStage6 from '../../assets/img/stage_6.png';
+import gambleBackground from '../../assets/img/window.png';
+import emptyPot from '../../assets/img/empty_pot.png';
+import commonPot from '../../assets/img/common_pot.png';
+import uncommonPot from '../../assets/img/uncommon_pot.png';
+import rarePot from '../../assets/img/rare_pot.png';
+import windowSnakePlant from '../../assets/img/window_snake_plant.png';
+import windowMonstera from '../../assets/img/window_monstera.png';
+import snakePlant from '../../assets/img/snake_plant.png';
+import monsteraPlant from '../../assets/img/monstera.png';
+import tutorialBird from '../../assets/img/bird.png';
+import tutorialBirdNews from '../../assets/img/bird_news.png';
 import earnBackground from '../../assets/earnPlantBackground.svg';
 import collectedSnakePlant from '../../assets/CollectedSnakePlant.svg';
 import './Gamble.css'
@@ -51,7 +55,7 @@ const postTempTimer = async (tempTimerValue) => {
 
 function Gamble() {
     const [background, setBackground] = useState(gambleBackground);
-    const [plantStage, setPlantStage] = useState(0);
+    const [potState, setPotState] = useState(emptyPot);
     const [buttonState, setButtonState] = useState(1);
     const [showTimer, setShowTimer] = useState("Plant");
     const [isCounting, setIsCounting] = useState(false);
@@ -68,6 +72,7 @@ function Gamble() {
             startTime = Date.now();
             console.log(startTime);
             postTempTimer(startTime);
+            setPotState(commonPot);
             setShowTimer(timeFormat(basic_seed_time));
             setIsCounting(true);
             console.log(isCounting);
@@ -101,17 +106,15 @@ function Gamble() {
                 const currentTime = Date.now();
                 const timeDifference = Math.floor((currentTime - startTime) / 1000);
                 const timeLeft = basic_seed_time - timeDifference;
-                const stages = [plantStage1, plantStage2, plantStage3, plantStage4, plantStage5, plantStage6]
-                const stageIndex = Math.floor((basic_seed_time / timeLeft) * 6);
 
                 if (timeLeft <= 0) {
                     setButtonState(3);
+                    setPotState(windowMonstera);
                     setShowTimer("Get");
                     setIsCounting(false);
                     clearInterval(interval);
                 } else {
                     setShowTimer(timeFormat(timeLeft));
-                    setPlantStage(stages[Math.min(stageIndex, 6 - 1)]);
                 }
             }, 1000);
         }
@@ -140,7 +143,7 @@ function Gamble() {
                         className="w-[40vw] h-full object-cover" 
                     />
                     <img 
-                        src={plantStage}
+                        src={potstate}
                         alt="" 
                         className="absolute w-full h-full bottom-0 object-cover" 
                     />
