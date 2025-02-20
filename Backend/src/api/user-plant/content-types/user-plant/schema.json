@@ -21,8 +21,9 @@
     "harvestable": {
       "type": "boolean"
     },
-    "plantedAt": {
-      "type": "biginteger"
+    "TimerStartTime": {
+      "type": "biginteger",
+      "default": "0"
     }
   }
 }

@@ -763,8 +763,9 @@ export interface ApiUserPlantUserPlant extends Struct.CollectionTypeSchema {
       'api::user-plant.user-plant'
     > &
       Schema.Attribute.Private;
-    plantedAt: Schema.Attribute.BigInteger;
     publishedAt: Schema.Attribute.DateTime;
+    TimerStartTime: Schema.Attribute.BigInteger &
+      Schema.Attribute.DefaultTo<'0'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
