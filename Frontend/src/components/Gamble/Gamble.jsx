@@ -1,4 +1,5 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
+import React from 'react';
 import { useAuth } from '../../AuthContext';
 import gambleBackground from '../../assets/img/window.png';
 import emptyPot from '../../assets/img/empty_pot.png';
@@ -9,8 +10,6 @@ import windowSnakePlant from '../../assets/img/window_snake_plant.png';
 import windowMonstera from '../../assets/img/window_monstera.png';
 import snakePlant from '../../assets/img/snake_plant.png';
 import monsteraPlant from '../../assets/img/monstera.png';
-import tutorialBird from '../../assets/img/bird.png';
-import tutorialBirdNews from '../../assets/img/bird_news.png';
 import earnBackground from '../../assets/earnPlantBackground.svg';
 import collectedSnakePlant from '../../assets/CollectedSnakePlant.svg';
 import './Gamble.css'
@@ -72,7 +71,6 @@ function Gamble() {
     const { user, logout } = useAuth();
     const [background, setBackground] = useState(gambleBackground);
     const [potState, setPotState] = useState(emptyPot);
-    const [birdState, setBirdState] = useState(tutorialBird);
     const [buttonState, setButtonState] = useState(1);
     const [showTimer, setShowTimer] = useState("Plant");
     const [isCounting, setIsCounting] = useState(false);
