@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../../AuthContext';
 import gambleBackground from '../../assets/img/window.png';
 import emptyPot from '../../assets/img/empty_pot.png';
 import commonPot from '../../assets/img/common_pot.png';
@@ -21,7 +22,6 @@ import axios from "axios";
 const basic_seed_time = 20;
 let startTime = 0;
 
-const API_URL = "https://houseplanter-backend.onrender.com/api/user-plants/";
 const API_TOKEN = "94ca66a92ee238641c1b3ea83c833229e7573835775f2d63b8f897be81344933de76b5fc51aeb222b9b4e91971f1724699e17449d8e089b82b00b11457914f1704c5439bbf2a7c8c34d49849c02c2c292d9eec820651165d60fbd7a2e03ef14edd70151f2f0a9667506c47081855d91531fdf7949021066b352d7a6897c0ed91"
 
 const timeFormat = (input) => {
@@ -31,6 +31,7 @@ const timeFormat = (input) => {
 };
 
 const updatePlantedAt = async (plantId, newPlantedAt) => {
+    const API_URL = "https://houseplanter-backend.onrender.com/api/user-plants/";
     try {
       const response = await axios.put(`${API_URL}${plantId}`, {
         data: {
@@ -50,6 +51,7 @@ const updatePlantedAt = async (plantId, newPlantedAt) => {
   };
 
 const getPlantedAt = async (plantId) => {
+    const API_URL = "https://houseplanter-backend.onrender.com/api/user-plants/";
 try {
     const response = await axios.get(`${API_URL}${plantId}`, {
     headers: {
@@ -90,15 +92,13 @@ function Gamble() {
             setPotState(0);
             setButtonState(4);
         } else {
-            startTime = Date.now();
-            console.log(startTime);
-            postTempTimer(startTime);
-            setPotState(commonPot);
-            let db_time = getPlantedAt(); // with the plant ID
+            console.log("Started");
+            let plant_id = "f8tui9y5dtiexx6hhn2v48jp";
+            let db_time = getPlantedAt(plant_id); // with the plant ID
             if (db_time == 0) { // with the plant ID
                 startTime = Date.now();
                 console.log(startTime);
-                updatePlantedAt(plantId, startTime); // with the plant ID
+                updatePlantedAt(plant_id, startTime); // with the plant ID
             } else {
                 startTime = db_time;
                 console.log(startTime);
@@ -110,23 +110,23 @@ function Gamble() {
         }
     }
 
-    const [apiTimer, setApiTimer] = useState([]);
-    useEffect(() => {
-        axios.get(API_URL, {
-          headers: {
-            "Authorization": `Bearer ${API_TOKEN}`,
-            "Content-Type": "application/json"
-          }
-        })
-        .then(response => {
-            setApiTimer(response.data.data);
+    // const [apiTimer, setApiTimer] = useState([]);
+    // useEffect(() => {
+    //     axios.get(API_URL, {
+    //       headers: {
+    //         "Authorization": `Bearer ${API_TOKEN}`,
+    //         "Content-Type": "application/json"
+    //       }
+    //     })
+    //     .then(response => {
+    //         setApiTimer(response.data.data);
       
-          response.data.data.forEach(item => {
-            console.log("TempTimer:", item.TempTimer);
-          });
-        })
-        .catch(error => console.error("Error fetching plants:", error));
-      }, []);
+    //       response.data.data.forEach(item => {
+    //         console.log("TempTimer:", item.TempTimer);
+    //       });
+    //     })
+    //     .catch(error => console.error("Error fetching plants:", error));
+    //   }, []);
       
 
     useEffect(() => {
@@ -166,11 +166,10 @@ function Gamble() {
                     )}
                 </div>
                 <div className="relative w-full h-full">
-                    {apiTimer.map((apiTimer) => (
+                    {/* {apiTimer.map((apiTimer) => (
                     <p key={apiTimer.id} className="text-black text-lg font-bold">
-                    TempTimer: {apiTimer.TempTimer}
                   </p>
-                    ))}
+                    ))} */}
                     {buttonState !== 4 && (
                         <Timer timeleft={showTimer} onClick={plantSeed} />
                     )}
@@ -183,7 +182,7 @@ function Gamble() {
                         className="w-[40vw] h-full object-cover" 
                     />
                     <img 
-                        src={potstate}
+                        src={potState}
                         alt="" 
                         className="absolute w-full h-full bottom-0 object-cover" 
                     />
