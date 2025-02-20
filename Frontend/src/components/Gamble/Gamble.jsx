@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../AuthContext';
+
 import gambleBackground from '../../assets/img/background.png';
 import plantStage1 from '../../assets/img/stage_1.png';
 import plantStage2 from '../../assets/img/stage_2.png';
@@ -17,7 +19,7 @@ const basic_seed_time = 20;
 let startTime = 0;
 
 const API_URL = "https://houseplanter-backend.onrender.com/api/timers"
-const API_TOKEN = "94618f3f1eb34eed8dd3f9b558c6562534dc85d78b4cd0a32bb106ea3d9c0d2baa933b5547b32294473358b4b1662409698d8ff506cec50248a84d4fbdd9a0d3bea7b1afa1b1d792b89e94414fde235f26ac2aa8f914b9ec3674433664bb97b325ace22121f10bf2a6dc9f3cfaa1e0d3d1bab743380e292d575620115c57bf36"
+const API_TOKEN = "62505b41c2eed43dec696c86bfa0cf7ca5997c4e1e5433ed58f3f1b535e93d26470d09bf579b2cae6661dd0f8a36276c42623c8a52f37433653f4ff04c452e96aefaee5c182117a241ebcae0cf86fd6fb2828ed7a9411d27ef08a76f1453dff693a40b785b362d6fec13867fc3f333f35820dd4802290792d4490636e057b942"
 
 const timeFormat = (input) => {
     const minutes = Math.floor(input/60);
@@ -50,6 +52,7 @@ const postTempTimer = async (tempTimerValue) => {
   
 
 function Gamble() {
+    const { user, logout } = useAuth();
     const [background, setBackground] = useState(gambleBackground);
     const [plantStage, setPlantStage] = useState(0);
     const [buttonState, setButtonState] = useState(1);
@@ -122,6 +125,15 @@ function Gamble() {
     return (
         <>
             <Layout>
+                <div>
+                    {user.user ? (
+                        <>
+                        <h1 className='text-black'>Welcome, {user.user.username}!</h1>
+                        </>
+                    ) : (
+                        <h1>Not logged in</h1>
+                    )}
+                </div>
                 <div className="relative w-full h-full">
                     {apiTimer.map((apiTimer) => (
                     <p key={apiTimer.id} className="text-black text-lg font-bold">
@@ -139,11 +151,13 @@ function Gamble() {
                         alt="Gamble Background" 
                         className="w-full h-full object-cover" 
                     />
-                    <img 
+                    {plantStage !== 0 && (
+                        <img 
                         src={plantStage}
                         alt="" 
                         className="absolute w-full h-full bottom-0 object-cover" 
                     />
+                    )}                   
                 </div>
             </Layout>
         </>
