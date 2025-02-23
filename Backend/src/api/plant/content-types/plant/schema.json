@@ -47,8 +47,29 @@
         "audios"
       ]
     },
+    "seeds": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::seed.seed",
+      "mappedBy": "plant_types"
+    },
     "rarity": {
-      "type": "string"
+      "type": "enumeration",
+      "enum": [
+        "common",
+        "uncommon",
+        "rare"
+      ]
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "snake plant",
+        "monstera"
+      ]
+    },
+    "growthTime": {
+      "type": "biginteger"
     }
   }
 }

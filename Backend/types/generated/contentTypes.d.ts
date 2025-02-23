@@ -398,46 +398,6 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
   };
 }
 
-export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
-  collectionName: 'articles';
-  info: {
-    description: 'Create your blog content';
-    displayName: 'Article';
-    pluralName: 'articles';
-    singularName: 'article';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    author: Schema.Attribute.Relation<'manyToOne', 'api::author.author'>;
-    blocks: Schema.Attribute.DynamicZone<
-      ['shared.media', 'shared.quote', 'shared.rich-text', 'shared.slider']
-    >;
-    category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
-    cover: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    description: Schema.Attribute.Text &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 80;
-      }>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::article.article'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'title'>;
-    title: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiAuthorAuthor extends Struct.CollectionTypeSchema {
   collectionName: 'authors';
   info: {
@@ -450,7 +410,6 @@ export interface ApiAuthorAuthor extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    articles: Schema.Attribute.Relation<'oneToMany', 'api::article.article'>;
     avatar: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -482,7 +441,6 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    articles: Schema.Attribute.Relation<'oneToMany', 'api::article.article'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -538,6 +496,7 @@ export interface ApiInventoryItemInventoryItem
   extends Struct.CollectionTypeSchema {
   collectionName: 'inventory_items';
   info: {
+    description: '';
     displayName: 'inventoryItem';
     pluralName: 'inventory-items';
     singularName: 'inventory-item';
@@ -565,6 +524,7 @@ export interface ApiInventoryItemInventoryItem
         number
       > &
       Schema.Attribute.DefaultTo<0>;
+    type: Schema.Attribute.Enumeration<['common', 'uncommon', 'rare']>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -591,6 +551,7 @@ export interface ApiPlantPlant extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.String;
+    growthTime: Schema.Attribute.BigInteger;
     image: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
@@ -602,14 +563,43 @@ export interface ApiPlantPlant extends Struct.CollectionTypeSchema {
     name: Schema.Attribute.String;
     nativeHabitat: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    rarity: Schema.Attribute.String;
+    rarity: Schema.Attribute.Enumeration<['common', 'uncommon', 'rare']>;
     scientificName: Schema.Attribute.String;
+    seeds: Schema.Attribute.Relation<'manyToMany', 'api::seed.seed'>;
     specialFeatures: Schema.Attribute.Text;
+    type: Schema.Attribute.Enumeration<['snake plant', 'monstera']>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     uses: Schema.Attribute.String;
     waterNeeds: Schema.Attribute.String;
+  };
+}
+
+export interface ApiSeedSeed extends Struct.CollectionTypeSchema {
+  collectionName: 'seeds';
+  info: {
+    description: '';
+    displayName: 'Seed';
+    pluralName: 'seeds';
+    singularName: 'seed';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::seed.seed'> &
+      Schema.Attribute.Private;
+    plant_types: Schema.Attribute.Relation<'manyToMany', 'api::plant.plant'>;
+    publishedAt: Schema.Attribute.DateTime;
+    rarity: Schema.Attribute.Enumeration<['common', 'uncommon', 'rare']>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -632,35 +622,6 @@ export interface ApiTestTest extends Struct.SingleTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     test: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiTestingTesting extends Struct.CollectionTypeSchema {
-  collectionName: 'testings';
-  info: {
-    displayName: 'testing';
-    pluralName: 'testings';
-    singularName: 'testing';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::testing.testing'
-    > &
-      Schema.Attribute.Private;
-    longText: Schema.Attribute.Text;
-    publishedAt: Schema.Attribute.DateTime;
-    shortText: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -756,6 +717,14 @@ export interface ApiUserPlantUserPlant extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    growthStage: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 3;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
     harvestable: Schema.Attribute.Boolean;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -764,8 +733,10 @@ export interface ApiUserPlantUserPlant extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    rarity: Schema.Attribute.Enumeration<['common', 'uncommon', 'rare']>;
     TimerStartTime: Schema.Attribute.BigInteger &
       Schema.Attribute.DefaultTo<'0'>;
+    type: Schema.Attribute.Enumeration<['snake plant', 'monstera']>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1290,14 +1261,13 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::about.about': ApiAboutAbout;
-      'api::article.article': ApiArticleArticle;
       'api::author.author': ApiAuthorAuthor;
       'api::category.category': ApiCategoryCategory;
       'api::global.global': ApiGlobalGlobal;
       'api::inventory-item.inventory-item': ApiInventoryItemInventoryItem;
       'api::plant.plant': ApiPlantPlant;
+      'api::seed.seed': ApiSeedSeed;
       'api::test.test': ApiTestTest;
-      'api::testing.testing': ApiTestingTesting;
       'api::timer.timer': ApiTimerTimer;
       'api::user-game-data.user-game-data': ApiUserGameDataUserGameData;
       'api::user-plant.user-plant': ApiUserPlantUserPlant;
