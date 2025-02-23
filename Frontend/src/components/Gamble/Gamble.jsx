@@ -161,7 +161,7 @@ function Gamble() {
                 {user?.user ? (
                     <div className='bg-[#D6E0B9] flex justify-center'>
                         {/* <h1 className='text-black w-[40%] text-center bg-[#ACC48B] border-b border-l border-r border-[#87a65d] rounded-b-md !p-[.em] !text-3xl font-["Kreon"]'> 🌻 {user.user.username}'s Window 💐</h1> */}
-                        <h1 className='text-black w-[40%] text-center !pt-[.25em] !text-3xl font-["Kreon"]'> 🌻 {user.user.username}'s Window 💐</h1>
+                        <h1 className='text-black w-[40%] text-center !pt-[.25em] !text-3xl font-["Kreon"]'> {user.user.username}'s Window </h1>
                     </div>
                 ) : (
                     <h1>Not logged in</h1>
