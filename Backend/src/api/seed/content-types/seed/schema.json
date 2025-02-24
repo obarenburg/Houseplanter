@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "seeds",
+  "info": {
+    "singularName": "seed",
+    "pluralName": "seeds",
+    "displayName": "Seed",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "rarity": {
+      "type": "enumeration",
+      "enum": [
+        "common",
+        "uncommon",
+        "rare"
+      ]
+    },
+    "plant_types": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::plant.plant",
+      "inversedBy": "seeds"
+    }
+  }
+}

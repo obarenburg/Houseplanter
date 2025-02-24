@@ -24,6 +24,26 @@
     "TimerStartTime": {
       "type": "biginteger",
       "default": "0"
+    },
+    "growthStage": {
+      "type": "integer",
+      "default": 0,
+      "max": 3
+    },
+    "rarity": {
+      "type": "enumeration",
+      "enum": [
+        "common",
+        "uncommon",
+        "rare"
+      ]
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "snake plant",
+        "monstera"
+      ]
     }
   }
 }

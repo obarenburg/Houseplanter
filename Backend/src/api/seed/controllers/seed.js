@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * testing controller
+ * seed controller
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
-module.exports = createCoreController('api::testing.testing');
+module.exports = createCoreController('api::seed.seed');
