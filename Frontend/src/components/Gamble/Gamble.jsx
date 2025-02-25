@@ -186,7 +186,7 @@ function Gamble() {
                 <img 
                     src={background}
                     alt="Game Background" 
-                    className="w-[40vw] h-full object-cover" 
+                    className="h-full object-cover" 
                 />
                 {potState && (
                     <img 
