@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom';
 import Layout from '../Layout';
 import bgGrid from '../assets/svg/background-checks.svg';
 import StyledText from '../components/StyledText';
+import SeedBag from '../components/Shop/SeedBag';
 
 export default function ShopPage () {
     const [test, setTest] = useState ([]);
@@ -34,6 +35,7 @@ export default function ShopPage () {
           backgroundPosition: 'center',
         }}
       >
+        <SeedBag/>
 
         <div className="mt-12 mb-8 text-5xl">
           <StyledText text="Test" className="text-center" />
