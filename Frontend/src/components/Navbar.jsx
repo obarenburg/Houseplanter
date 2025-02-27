@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
+import React  from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/img/houseplanter_logo.png';
 import LogoHover from '../assets/img/houseplanter_logo_hover.png'
 import { useAuth } from '../AuthContext';
 
-export default function Navbar() {
+const Navbar = () => {
   const { user, logout } = useAuth();
   console.log('[Navbar] Rendering - User:', user);
 
@@ -45,3 +44,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
+export default React.memo(Navbar);
