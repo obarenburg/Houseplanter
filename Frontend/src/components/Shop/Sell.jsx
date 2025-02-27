@@ -25,10 +25,7 @@ function Sell({ money, setMoney }) {
 
     return (
         <div className='bg-[#ACC48B]'>
-                    <div className='flex flex-col items-center'>
-                        <h2 className='mt-[1em] p-[.5em] bg-red-400 rounded-md'>Current Inventory</h2>
-                    </div>
-                    <div className='pb-[1em]'>
+                    <div className='py-[.5em] mb-[1em]'>
                         {userPlants.length > 0 ? (
                             userPlants.map((plant, index) => {
                                 console.log(`Plant ${index}:`, plant);
@@ -40,11 +37,11 @@ function Sell({ money, setMoney }) {
                                             </div>
                                             <div className='!flex !flex-col !justify-between !gap-1 !h-full !w-full'>
                                                 <div className='!flex !justify-between'>
-                                                    <p className='!ml-2'>{plant.type}</p>
-                                                    <p className='!mr-2'>100$</p>
+                                                    <p className='!ml-2 text-xl font-bold font-["Kreon"]'>{plant.type}</p>
+                                                    <p className='!mr-2 text-xl font-bold font-["Kreon"]'>100$</p>
                                                 </div>
                                                 <div className='!flex !justify-between'>
-                                                    <p className='!ml-2 !mt-auto'>{plant.rarity}</p>
+                                                    <p className='!ml-2 text-xl font-bold font-["Kreon"] !mt-auto'>{plant.rarity}</p>
                                                     <div className='!flex !justify-end !mt-auto !ml-auto !w-30 cursor-pointer' onClick={() => handleSell(index)}>
                                                         <img src={sellButton} alt="" />
                                                     </div>

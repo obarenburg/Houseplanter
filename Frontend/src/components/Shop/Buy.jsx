@@ -40,21 +40,18 @@ function Buy({ money, setMoney, commonSeeds, setCommonSeeds,
 
     return (
         <div className='bg-[#ACC48B]'>
-            <div className='flex flex-col items-center'>
-                <h2 className='mt-[1em] p-[.5em] bg-red-400 rounded-md'>Shop</h2>
-            </div>
-            <div className='pb-[1em]'>
+            <div className='py-[.5em] mb-[1em]'>
                 <div className='bg-gray-200 flex flex-row p-0 m-[1em] text-black list-none rounded-t-md border-0'>
                     <div className='bg-gray-400 m-0'>
                         <img src={commonSeed} alt="" className='p-[.5em] w-30' />
                     </div>
                     <div className='flex flex-col justify-between gap-1 h-full w-full'>
                         <div className='flex justify-between'>
-                            <p className='ml-2'>Common Seeds</p>
-                            <p className='mr-2'>{commonSeedPrice + "$"}</p>
+                            <p className='ml-2 text-xl font-bold font-["Kreon"]'>Common Seeds</p>
+                            <p className='mr-2 text-xl font-bold font-["Kreon"]'>{commonSeedPrice + "$"}</p>
                         </div>
                         <div className='flex justify-between'>
-                            <p className='ml-2 mt-auto'>In Stock</p>
+                            <p className='ml-2 text-xl font-bold font-["Kreon"] mt-auto'>In Stock</p>
                             <div className='flex cursor-pointer justify-end mt-auto ml-auto w-30' onClick={() => handleBuy("common")}>
                                 <img src={buyButton} alt="" />
                             </div>
@@ -67,11 +64,11 @@ function Buy({ money, setMoney, commonSeeds, setCommonSeeds,
                     </div>
                     <div className='flex flex-col justify-between gap-1 h-full w-full'>
                         <div className='flex justify-between'>
-                            <p className='ml-2'>Uncommon Seeds</p>
-                            <p className='mr-2'>{uncommonSeedPrice + "$"}</p>
+                            <p className='ml-2 text-xl font-bold font-["Kreon"]'>Uncommon Seeds</p>
+                            <p className='mr-2 text-xl font-bold font-["Kreon"]'>{uncommonSeedPrice + "$"}</p>
                         </div>
                         <div className='flex justify-between'>
-                            <p className='ml-2 mt-auto'>In Stock</p>
+                            <p className='ml-2 text-xl font-bold font-["Kreon"] mt-auto'>In Stock</p>
                             <div className='flex cursor-pointer justify-end mt-auto ml-auto w-30' onClick={() => handleBuy("uncommon")}>
                                 <img src={buyButton} alt="" />
                             </div>
@@ -84,11 +81,11 @@ function Buy({ money, setMoney, commonSeeds, setCommonSeeds,
                     </div>
                     <div className='flex flex-col justify-between gap-1 h-full w-full'>
                         <div className='flex justify-between'>
-                            <p className='ml-2'>Rare Seeds</p>
-                            <p className='mr-2'>{rareSeedPrice + "$"}</p>
+                            <p className='ml-2 text-xl font-bold font-["Kreon"]'>Rare Seeds</p>
+                            <p className='mr-2 text-xl font-bold font-["Kreon"]'>{rareSeedPrice + "$"}</p>
                         </div>
                         <div className='flex justify-between'>
-                            <p className='ml-2 mt-auto'>In Stock</p>
+                            <p className='ml-2 text-xl font-bold font-["Kreon"] mt-auto'>In Stock</p>
                             <div className='flex cursor-pointer justify-end mt-auto ml-auto w-30' onClick={() => handleBuy("rare")}>
                                 <img src={buyButton} alt="" />
                             </div>

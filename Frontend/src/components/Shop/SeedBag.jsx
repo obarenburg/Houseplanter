@@ -7,6 +7,8 @@ import rareSeed from '../../assets/rareSeeds.svg';
 import { useAuth } from '../../AuthContext';
 import Sell from './Sell';
 import Buy from './Buy';
+import buyTab from '../../assets/BuyTab.svg';
+import sellTab from '../../assets/SellTab.svg';
 
 function SeedBag() {
     const [shopType, setShopType] = useState("Sell");
@@ -62,32 +64,31 @@ function SeedBag() {
                     </div>
                 </div>
             </div>
-            <div>
-                <div className='flex flex-row gap-20 justify-between'>
-                    <div className={`cursor-pointer text-black pl-[4em] pr-[4em] rounded-t-md ${shopType === "buy" ? "bg-[#8a9e6f]" : "bg-[#ACC48B]"}`}>
-                        <button
-                            className='cursor-pointer bg-white mt-[.5em] p-[.25em] rounded-md'
-                            onClick={() => setShopType("buy")}
-                        >
-                            Buy
-                        </button>
+            <div className='w-[80%]'>
+                <div className='flex flex-row justify-between gap-8 relative'>
+                    <div
+                        onClick={() => setShopType("buy")}
+                        className={`cursor-pointer text-black rounded-t-md transition-all duration-300 
+                            ${shopType === "buy" ? "bg-[#ACC48B] z-20" : "bg-[#96AB79] translate-y-[.5em] z-10"}`}
+                    >
+                        <img src={buyTab} alt="Buy" className='cursor-pointer p-2 mx-14 h-12 object-contain' />
                     </div>
-                    <div className={`cursor-pointer text-black pl-[4em] pr-[4em] rounded-t-md ${shopType === "buy" ? "bg-[#ACC48B]" : "bg-[#8a9e6f]"}`}>
-                        <button
-                            className='cursor-pointer bg-white mt-[.5em] p-[.25em] rounded-md'
-                            onClick={() => setShopType("sell")}
-                        >
-                            Sell
-                        </button>
+                    <div
+                        onClick={() => setShopType("sell")}
+                        className={`cursor-pointer text-black rounded-t-md transition-all duration-300 
+                            ${shopType === "sell" ? "bg-[#ACC48B] z-20" : "bg-[#96AB79] translate-y-[.5em] z-10"}`}
+                    >
+                        <img src={sellTab} alt="Sell" className='cursor-pointer p-2 mx-14 h-12 object-contain' />
                     </div>
-
                 </div>
-                {shopType === "buy" ? 
-                <Buy money={money} setMoney={setMoney} commonSeeds={commonSeeds} setCommonSeeds={setCommonSeeds}
-                uncommonSeeds={uncommonSeeds} setUncommonSeeds={setUncommonSeeds}
-                rareSeeds={rareSeeds} setRareSeeds={setRareSeeds} />
-                    : 
-                <Sell money={money} setMoney={setMoney} />}
+                <div className='z-20 relative'>
+                    {shopType === "buy" ?
+                        <Buy money={money} setMoney={setMoney} commonSeeds={commonSeeds} setCommonSeeds={setCommonSeeds}
+                            uncommonSeeds={uncommonSeeds} setUncommonSeeds={setUncommonSeeds}
+                            rareSeeds={rareSeeds} setRareSeeds={setRareSeeds} />
+                        :
+                        <Sell money={money} setMoney={setMoney} />}
+                </div>
             </div>
 
         </div>
