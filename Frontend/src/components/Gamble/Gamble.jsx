@@ -9,6 +9,7 @@ import './Gamble.css';
 import Layout from '../../Layout';
 import axios from "axios";
 import Timer from '../Timer/Timer';
+import CollectedPlantCard from "../PlantCard"
 
 const timeFormat = (input) => {
     const minutes = Math.floor(input / 60);
@@ -24,6 +25,8 @@ function Gamble() {
     const [growthTime, setGrowthTime] = useState(30);
     const [buttonText, setButtonText] = useState("Plant");
     const [timerValue, setTimerValue] = useState("Plant");
+    const [collectedPlant, setCollectedPlant] = useState(null)
+
 
     // Fetch Seed Details 
     // idea user picks a seed (the rarity) 
@@ -75,6 +78,9 @@ function Gamble() {
             const plantTypes = await fetchSeedDetails("common"); // change to getting seed from users inv
             const selectedPlant = selectRandomPlant(plantTypes);
 
+            console.log(selectedPlant.type)
+            // console.log(selectedPlant.image[0]?.url)
+
             await axios.post('https://houseplanter-backend.onrender.com/api/user-plants', {
                 data: {
                     type: selectedPlant.type,
@@ -92,6 +98,11 @@ function Gamble() {
             });
 
             getUserGameData(user.user.id, user.jwt);
+            
+            setCollectedPlant({
+                name: selectedPlant.type,
+            });
+
             setPlantStatus("collected");
         } catch (error) {
             console.error("Error collecting plant:", error.response?.data || error);
@@ -153,7 +164,10 @@ function Gamble() {
     };
 
     return (
-        <Layout>
+            <Layout>
+                
+
+
             <div>
                 {user?.user ? (
                     <div className='bg-[#D6E0B9] flex justify-center'>
@@ -190,17 +204,21 @@ function Gamble() {
                 )}
 
                 {plantStatus === "collected" && (
-                    <img
-                        src={collectedSnakePlant}
-                        className="absolute w-3/4 h-3/4 p-[5em] top-1/8 left-1/8 backdrop-blur-sm rounded-[2%] transition-all duration-700 z-[10]"
-                        alt="Collected Plant"
-                        onClick={() => {
-                            setPlantStatus("idle");
-                            setStartTime(0);
-                            setButtonText(" ");
-                            setTimerValue("Plant");
-                        }}
-                    />
+                    <CollectedPlantCard 
+                    plantName={collectedPlant.name} 
+                    
+                 />
+                    // <img
+                    //     src={collectedSnakePlant}
+                    //     className="absolute w-3/4 h-3/4 p-[5em] top-1/8 left-1/8 backdrop-blur-sm rounded-[2%] transition-all duration-700 z-[10]"
+                    //     alt="Collected Plant"
+                    //     onClick={() => {
+                    //         setPlantStatus("idle");
+                    //         setStartTime(0);
+                    //         setButtonText(" ");
+                    //         setTimerValue("Plant");
+                    //     }}
+                    // />
                 )}
             </div>
         </Layout>
