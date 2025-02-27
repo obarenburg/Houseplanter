@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import flower from '../../assets/flower.svg';
-import sellButton from '../../assets/sell.svg';
+import flower from '../../assets/Flower.svg';
+import sellButton from '../../assets/Sell.svg';
 import { useAuth } from '../../AuthContext';
 
 function Sell({ money, setMoney }) {
