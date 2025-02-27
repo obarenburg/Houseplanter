@@ -59,10 +59,14 @@ const CollectedPlantCard = ({plantName}) => {
   );
 
   if (loading) return <p className="text-center text-xl mt-12">Loading...</p>;
-  if (error) return <p className="text-center text-xl mt-12 text-red-500">{error}</p>;
+  if (error)
+    return <p className="text-center text-xl mt-12 text-red-500">{error}</p>;
 
   const {name, scientificName, image, rarity} = plant;
-  const imageUrl = image && image.length > 0 ? `${image[0].url}` : null;
+  const collectionImage = image.find (img => img.name.includes ('collection'));
+  const imageUrl = collectionImage ? collectionImage.url : null;
+
+  console.log(imageUrl)
 
   return (
     <div
@@ -80,20 +84,20 @@ const CollectedPlantCard = ({plantName}) => {
         you collected a
       </h1>
 
-      <div className="flex flex-col items-center justify-center bg-gradient-to-br from-[#f0f8e2] to-[#d6e0b9] p-4 rounded-2xl shadow-xl border border-[#c5d3a4] relative w-64 h-80 ">
+      <div className="flex flex-col items-center justify-center bg-gradient-to-br from-[#f0f8e2] to-[#d6e0b9] rounded-2xl shadow-xl border border-[#c5d3a4] relative w-64 h-80">
         {imageUrl
           ? <img
               src={imageUrl}
               alt={name}
-              className="h-64 w-auto object-contain rounded-lg"
+              className="h-[20rem] w-auto object-contain"
             />
           : <p className="text-gray-500">No Image Available</p>}
 
-        <h2 className="text-2xl font-bold text-[#2b6b2b] capitalize font-[Slackey] tracking-wide drop-shadow-md">
+        <h2 className="text-2xl font-bold text-[#2b6b2b] capitalize font-[Slackey] tracking-wide drop-shadow-md -mt-10">
           {name}
         </h2>
 
-        <h3 className="text-sm text-gray-500 italic drop-shadow-md">
+        <h3 className="text-sm text-gray-500 italic drop-shadow-md -mt-2">
           {scientificName}
         </h3>
 
