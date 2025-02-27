@@ -64,17 +64,17 @@ function SeedBag() {
             </div>
             <div>
                 <div className='flex flex-row gap-20 justify-between'>
-                    <div className={`text-black pl-[4em] pr-[4em] rounded-t-md ${shopType === "buy" ? "bg-[#8a9e6f]" : "bg-[#ACC48B]"}`}>
+                    <div className={`cursor-pointer text-black pl-[4em] pr-[4em] rounded-t-md ${shopType === "buy" ? "bg-[#8a9e6f]" : "bg-[#ACC48B]"}`}>
                         <button
-                            className='bg-white mt-[.5em] p-[.25em] rounded-md'
+                            className='cursor-pointer bg-white mt-[.5em] p-[.25em] rounded-md'
                             onClick={() => setShopType("buy")}
                         >
                             Buy
                         </button>
                     </div>
-                    <div className={`text-black pl-[4em] pr-[4em] rounded-t-md ${shopType === "buy" ? "bg-[#ACC48B]" : "bg-[#8a9e6f]"}`}>
+                    <div className={`cursor-pointer text-black pl-[4em] pr-[4em] rounded-t-md ${shopType === "buy" ? "bg-[#ACC48B]" : "bg-[#8a9e6f]"}`}>
                         <button
-                            className='bg-white mt-[.5em] p-[.25em] rounded-md'
+                            className='cursor-pointer bg-white mt-[.5em] p-[.25em] rounded-md'
                             onClick={() => setShopType("sell")}
                         >
                             Sell
