@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../AuthContext';
 import gambleBackground from '../../assets/img/window.png';
@@ -9,6 +10,7 @@ import './Gamble.css';
 import Layout from '../../Layout';
 import axios from "axios";
 import Timer from '../Timer/Timer';
+import CollectedPlantCard from "../PlantCard"
 
 const timeFormat = (input) => {
     const minutes = Math.floor(input / 60);
@@ -24,6 +26,7 @@ function Gamble() {
     const [growthTime, setGrowthTime] = useState(30);
     const [buttonText, setButtonText] = useState("Plant");
     const [timerValue, setTimerValue] = useState("Plant");
+    const [collectedPlant, setCollectedPlant] = useState(null)
 
     // Fetch Seed Details 
     // idea user picks a seed (the rarity) 
@@ -92,6 +95,11 @@ function Gamble() {
             });
 
             getUserGameData(user.user.id, user.jwt);
+            
+            setCollectedPlant({
+                name: selectedPlant.type,
+            });
+
             setPlantStatus("collected");
         } catch (error) {
             console.error("Error collecting plant:", error.response?.data || error);
@@ -114,6 +122,7 @@ function Gamble() {
                     setButtonText(" ");
                     setTimerValue("Collect");
                     localStorage.removeItem('plantStartTime');
+                
                 } else {
                     setTimerValue(timeFormat(remainingTime));
                 }
@@ -153,7 +162,7 @@ function Gamble() {
     };
 
     return (
-        <Layout>
+            <Layout>
             <div>
                 {user?.user ? (
                     <div className='bg-[#D6E0B9] flex justify-center'>
@@ -168,6 +177,7 @@ function Gamble() {
                 {buttonText && (
                     <Timer timeleft={timerValue} onClick={handleAction} />
                 )}
+
                 {!buttonText && plantStatus === "collected" && (
                     <img
                         src={collectedSnakePlant}
@@ -190,17 +200,11 @@ function Gamble() {
                 )}
 
                 {plantStatus === "collected" && (
-                    <img
-                        src={collectedSnakePlant}
-                        className="absolute w-3/4 h-3/4 p-[5em] top-1/8 left-1/8 backdrop-blur-sm rounded-[2%] transition-all duration-700 z-[10]"
-                        alt="Collected Plant"
-                        onClick={() => {
-                            setPlantStatus("idle");
-                            setStartTime(0);
-                            setButtonText(" ");
-                            setTimerValue("Plant");
-                        }}
-                    />
+                    <div className="absolute inset-0 flex items-center justify-center z-50 -mt-60">
+                        <CollectedPlantCard 
+                            plantName={collectedPlant.name} 
+                        />
+                    </div>
                 )}
             </div>
         </Layout>
