@@ -36,16 +36,6 @@ export default function ShopPage () {
         }}
       >
         <SeedBag/>
-
-        <div className="mt-12 mb-8 text-5xl">
-          <StyledText text="Test" className="text-center" />
-        </div>
-
-        <p className="text-left  max-w-prose bg-amber-50 text-black">
-               <b>Houseplanter</b> is not just about collecting plants though! You also also look closer at your plants int the collection to check out some real world facts. These include
-              care information for their real world counter parts, such as <b>Watering Times</b>, <b>Sun Light Requirements</b> and <b>Preferred Climate!</b>
-        </p>
-        
       </div>
     </Layout>
   );
