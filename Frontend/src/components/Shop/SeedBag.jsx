@@ -1,6 +1,6 @@
 import seedBagBackground from '../../assets/seedBagBackground.svg';
 import React, { useEffect, useState } from 'react';
-import seedBag from '../../assets/seedBag.svg';
+import seedBag from '../../assets/SeedBag.svg';
 import commonSeed from '../../assets/commonSeeds.svg';
 import uncommonSeed from '../../assets/uncommonSeeds.svg';
 import rareSeed from '../../assets/rareSeeds.svg';
