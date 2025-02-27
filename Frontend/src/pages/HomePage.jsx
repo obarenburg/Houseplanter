@@ -51,11 +51,11 @@ export default function Home() {
                 padding: "2rem",
               }}
             >
-              <div className="flex justify-start mb-8 text-5xl">
+              <div className="flex justify-center mb-8 text-5xl relative">
                 <StyledText text="planting seeds" />
               </div>
 
-              <p className="text-left  max-w-prose">
+              <p className="text-center max-w-prose">
               <b>Houseplanter</b> is a relaxing browser game about planting seeds and collecting cool plants. Start with <b>Common Seeds</b> seeds and collect your way up to <b>Rare Seeds </b> 
                to find the most desired plants! Head over to the shop to purchase your first seeds today
               </p>

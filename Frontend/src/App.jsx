@@ -9,7 +9,7 @@ function App() {
       <Toaster position="top-center" reverseOrder={false} />
       <AuthProvider>
       <div className="w-full min-h-screen flex justify-center bg-white">
-      <div className="w-full max-w-[45em]">
+      <div className="w-full max-w-full">
             <AppRoutes />
           </div>
         </div>

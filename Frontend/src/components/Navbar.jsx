@@ -10,7 +10,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-[#acc48b] text-white rounded-[9px] p-2 pr-4">
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto max-w-1/3 justify-center items-center w-screen">
 
         <Link to="/" className="h-20 w-70 object-contain">
           <div className="relative">
@@ -24,7 +24,8 @@ const Navbar = () => {
           />
           </div>
         </Link>
-
+      </div>
+      <div className="container mx-auto flex justify-center items-center">
         <ul className="flex space-x-6">
         {user ? (
             <>
