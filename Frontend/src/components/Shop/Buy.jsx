@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import buyButton from '../../assets/buy.svg';
+import buyButton from '../../assets/Buy.svg';
 import { useAuth } from '../../AuthContext';
 import commonSeed from '../../assets/commonSeeds.svg';
 import uncommonSeed from '../../assets/uncommonSeeds.svg';
