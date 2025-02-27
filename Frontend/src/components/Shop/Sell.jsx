@@ -1,26 +1,78 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-key */
 import React, { useEffect, useState } from 'react';
 import flower from '../../assets/Flower.svg';
 import sellButton from '../../assets/Sell.svg';
 import { useAuth } from '../../AuthContext';
+import axios from 'axios';
 
 function Sell({ money, setMoney }) {
-    const [plants, setPlants] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const { gameData } = useAuth();
-    const [userPlants, setUserPlants] = useState(Array.isArray(gameData?.user_plants) ? gameData.user_plants : []);
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-    const userID = storedUser?.user?.id || storedUser?.id;
-    const jwtToken = storedUser?.jwt;
+    const { user } = useAuth();
 
-    const handleSell = (index) => {
-        console.log("User ID is:", userID);
-        setUserPlants(prevPlants => prevPlants.filter((_, i) => i !== index));
-        setMoney(money + 100);
-        updateDatabase(userID, 100);
+    const [userPlants, setUserPlants] = useState([]);
+    const [userDocId, setUserDocId] = useState([]);
+
+    const fetchUserData = async () => {
+        try {
+            console.log(user.user.id)
+            const response = await axios.get(`https://houseplanter-backend.onrender.com/api/user-game-datas?filters[user][id][$eq]=${user.user.id}&populate=user_plants`, {
+                headers: {
+                    Authorization: `Bearer ${user.jwt}`,
+                }
+            });
+
+            const data = response.data.data[0];
+            setMoney(data.money);
+            setUserPlants(data.user_plants);
+            setUserDocId(data.documentId)
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
     };
-    
-    const updateDatabase = async (documentId, value) => {
-        
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
+
+    const handleSell = async (index, plant) => {
+        try {
+            const updatedPlants = userPlants.filter((_, i) => i !== index);
+            const newMoney = money + 100
+            
+            setUserPlants(updatedPlants);
+            setMoney(newMoney);
+
+            // get plant doc id
+            const plantDocId = plant.documentId;
+            console.log(plantDocId)
+
+            // delete using plant doc id
+            await axios.delete(`https://houseplanter-backend.onrender.com/api/user-plants/${plantDocId}`, {
+                headers: {
+                    Authorization: `Bearer ${user.jwt}`,
+                }
+            });
+
+            // update user money
+            await axios.put(`https://houseplanter-backend.onrender.com/api/user-game-datas/${userDocId}`, {
+                data: {
+                    money: newMoney
+                }
+            }, {
+                headers: {
+                    Authorization: `Bearer ${user.jwt}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            // refresh State
+            fetchUserData();
+        } catch (error) {
+            console.error("Error selling plant:", error);
+        }
     };
 
     return (
@@ -42,7 +94,7 @@ function Sell({ money, setMoney }) {
                                                 </div>
                                                 <div className='!flex !justify-between'>
                                                     <p className='!ml-2 text-xl font-bold font-["Kreon"] !mt-auto'>{plant.rarity}</p>
-                                                    <div className='!flex !justify-end !mt-auto !ml-auto !w-30 cursor-pointer' onClick={() => handleSell(index)}>
+                                                    <div className='!flex !justify-end !mt-auto !ml-auto !w-30 cursor-pointer' onClick={() => handleSell(index, plant)}>
                                                         <img src={sellButton} alt="" />
                                                     </div>
                                                 </div>
