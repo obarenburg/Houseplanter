@@ -25,6 +25,16 @@
       "relation": "manyToMany",
       "target": "api::plant.plant",
       "inversedBy": "seeds"
+    },
+    "pot": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

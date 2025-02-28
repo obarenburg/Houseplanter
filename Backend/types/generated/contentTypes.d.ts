@@ -595,6 +595,7 @@ export interface ApiSeedSeed extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::seed.seed'> &
       Schema.Attribute.Private;
     plant_types: Schema.Attribute.Relation<'manyToMany', 'api::plant.plant'>;
+    pot: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     publishedAt: Schema.Attribute.DateTime;
     rarity: Schema.Attribute.Enumeration<['common', 'uncommon', 'rare']>;
     updatedAt: Schema.Attribute.DateTime;
