@@ -85,7 +85,8 @@ function Gamble() {
                     growthStage: 1,
                     TimerStartTime: Date.now(),
                     harvestable: true,
-                    user: gameData.id
+                    user: gameData.id,
+                    plant: selectedPlant.id
                 }
             }, {
                 headers: {
