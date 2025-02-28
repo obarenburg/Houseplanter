@@ -25,9 +25,10 @@ module.exports = [
     name: 'strapi::cors',
     config: {
       enabled: true,
-      origin: '*',
+      origin: ['https://houseplanter-1.onrender.com', 'http://localhost:5173/'],
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-      headers: '*',
+      headers: ['Content-Type', 'Authorization'],
+      credentials: true,
     },
   },
   'strapi::poweredBy',
