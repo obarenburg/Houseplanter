@@ -44,6 +44,12 @@
         "snake plant",
         "monstera"
       ]
+    },
+    "plant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::plant.plant",
+      "inversedBy": "user_plants"
     }
   }
 }

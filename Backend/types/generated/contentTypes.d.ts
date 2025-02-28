@@ -571,6 +571,10 @@ export interface ApiPlantPlant extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_plants: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-plant.user-plant'
+    >;
     uses: Schema.Attribute.String;
     waterNeeds: Schema.Attribute.String;
   };
@@ -733,6 +737,7 @@ export interface ApiUserPlantUserPlant extends Struct.CollectionTypeSchema {
       'api::user-plant.user-plant'
     > &
       Schema.Attribute.Private;
+    plant: Schema.Attribute.Relation<'manyToOne', 'api::plant.plant'>;
     publishedAt: Schema.Attribute.DateTime;
     rarity: Schema.Attribute.Enumeration<['common', 'uncommon', 'rare']>;
     TimerStartTime: Schema.Attribute.BigInteger &

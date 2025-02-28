@@ -70,6 +70,12 @@
     },
     "growthTime": {
       "type": "biginteger"
+    },
+    "user_plants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-plant.user-plant",
+      "mappedBy": "plant"
     }
   }
 }
