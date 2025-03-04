@@ -1,11 +1,21 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 
+/* original home page assets */
 import bgGrid from "../assets/svg/background-checks.svg";
-import yellowSection from "../assets/svg/yellow-block.svg";
-import greenSection from "../assets/svg/green-block.svg";
-import orangeCircle from "../assets/svg/orange-blob.svg";
-import StyledText from "../components/StyledText";
+/* import yellowSection from "../assets/svg/yellow-block.svg"; */
+/* import greenSection from "../assets/svg/green-block.svg"; */
+/* import orangeCircle from "../assets/svg/orange-blob.svg"; */
+/* import StyledText from "../components/StyledText"; */
+
+import homeContainerLeft from "../assets/svg/home_container_left.svg";
+import homeContainerRight from "../assets/svg/home_container_right.svg";
+import homeLeaf from "../assets/svg/home_leaf.svg";
+import homeWideContainer from "../assets/svg/home_wide_container.svg";
+import orangeFlower from "../assets/svg/orange_flower.svg";
+import orangeFlowerSmall from "../assets/svg/orange_flower_small.svg";
+import pinkFlower from "../assets/svg/pink_flower.svg";
+import StyledText2 from "../components/StyledText2";
 import { Link } from 'react-router-dom';
 import Layout from "../Layout";
 
@@ -14,92 +24,78 @@ export default function Home() {
     <>
       <Layout>
         <div
-          className="rounded-[9px] min-h-screen relative  mt-8 mb-8"
+          className="rounded-[9px] min-h-[70vh] max-h-[60vh] relative mt-8 mb-8 flex flex-col items-center scale-100 overflow-auto"
           style={{
-            backgroundImage: `url(${bgGrid})`,
+            backgroundColor: "#C4DEB4",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         >
-          <div className="relative px-8 py-16">
-            <div className="absolute top-1/2 right-16 -translate-y-1/2 z-0">
-              <img src={orangeCircle} className="h-64 w-64" />
+          {/* Scaled container */}
+          <div className="relative w-[100%] h-auto flex flex-col items-center scale-100">
+            {/* Main Image */}
+            <img className="w-[70%] h-auto p-10" src={homeWideContainer} />
+
+            {/* Leaf Image */}
+            <img
+              className="absolute top-[5%] left-[8%] w-[40%] h-auto"
+              src={homeLeaf}
+            />
+
+            {/* Button */}
+            <div className="absolute w-[15%] h-[18%] bg-[#fdee96] rounded-3xl flex items-center justify-center top-[40%] left-[20%] hover:bg-yellow-100">
+              <Link
+                to="/createUser"
+                className="text-[#316e54] text-[200%] font-['Fredoka'] font-semibold"
+                style={{
+                  color: "#316e54" 
+                }}
+              >
+                START
+              </Link>
+            </div>
+            {/* Orange Flowers */}
+            <img
+              className="absolute top-[35%] right-[10%] w-[25%] h-auto"
+              src={orangeFlower}
+            />
+            <img
+              className="absolute top-[75%] right-[35%] w-[15%] h-auto"
+              src={orangeFlowerSmall}
+            />
+
+            {/*Info Leaves */}
+            <img
+              className="absolute top-[120%] left-[26%] w-[27%] h-auto"
+              src={homeContainerLeft}
+            />
+            <div className="absolute top-[137%] left-[30%] w-[19.5%] text-[150%]/[125%] h-auto text-yellow-50 font-['Fredoka'] font-semibold text-center">
+                Plant seeds at your <Link to="/garden" className="font-['Fredoka'] px-[4%] bg-[#6C9251] rounded-3xl top-[40%] left-[20%] hover:bg-yellow-100">Window</Link> and they'll grow into a random plant over time
             </div>
 
-            <div className="max-w-2xl  z-10 ml-8">
-              <div className="text-5xl text-left">
-                <StyledText text="grow your dream garden" />
-                <StyledText text="one seed at a time" />
-              </div>
-
-              <div className="items-center flex flex-col">
-                  <Link to="/createUser" className="mt-6 mr-120 gap-2 px-4 py-3 font-['Kreon'] bg-[#fbc95d] text-white text-lg font-semibold rounded-[50px] hover:bg-[#fbc95d]/90">
-                    Get Started
-                  </Link>
-              </div>
+            <img
+              className="absolute top-[160%] right-[20%] w-[27%] h-auto"
+              src={homeContainerRight}
+            />
+            <div className="absolute top-[174%] right-[23%] w-[19.5%] text-[150%]/[125%] h-auto text-yellow-50 font-['Fredoka'] font-semibold text-center">
+                Learn about the plants you grow in your <Link to="/collection" className="font-['Fredoka'] px-[4%] bg-[#6C9251] rounded-3xl top-[40%] left-[20%] hover:bg-yellow-100">Collection</Link>, and customize your shelf displays
             </div>
+
+            <img
+              className="absolute top-[200%] left-[26%] w-[27%] h-auto"
+              src={homeContainerLeft}
+            />
+            <div className="absolute top-[220%] left-[30%] w-[18%] text-[150%]/[125%] h-auto text-yellow-50 font-['Fredoka'] font-semibold text-center">
+                Buy different types of seeds in the <Link to="/shop" className="font-['Fredoka'] px-[4%] bg-[#6C9251] rounded-3xl top-[40%] left-[20%] hover:bg-yellow-100">Shop</Link> for different results
+            </div>
+            {/* Pink Flower */}
+            <img
+              className="absolute top-[150%] left-[10%] w-[25%] h-auto"
+              src={pinkFlower}
+            />
           </div>
-
-          <section className="py-12 space-y-8 px-8">
-            <div
-              className="relative w-11/12 p-6 mx-4 flex flex-col"
-              style={{
-                backgroundImage: `url(${yellowSection})`,
-                backgroundSize: "100% 100%",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: " center",
-                padding: "2rem",
-              }}
-            >
-              <div className="flex justify-center mb-8 text-5xl relative">
-                <StyledText text="planting seeds" />
-              </div>
-
-              <p className="text-center max-w-prose">
-              <b>Houseplanter</b> is a relaxing browser game about planting seeds and collecting cool plants. Start with <b>Common Seeds</b> seeds and collect your way up to <b>Rare Seeds </b> 
-               to find the most desired plants! Head over to the shop to purchase your first seeds today
-              </p>
-            </div>
-            <div
-              className="relative w-11/12 p-6 mx-4 flex flex-col"
-              style={{
-                backgroundImage: `url(${greenSection})`,
-                backgroundSize: "100% 100%",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: " center",
-                padding: "2rem",
-              }}
-            >
-              <div className="flex justify-start mb-8 text-5xl">
-                <StyledText text="collection" />
-              </div>
-
-              <p className="text-left  max-w-prose">
-               <b>Houseplanter</b> is not just about collecting plants though! You also also look closer at your plants int the collection to check out some real world facts. These include
-              care information for their real world counter parts, such as <b>Watering Times</b>, <b>Sun Light Requirements</b> and <b>Preferred Climate!</b>
-              </p>
-            </div>
-            <div
-              className="relative w-11/12 p-6 mx-4 flex flex-col"
-              style={{
-                backgroundImage: `url(${yellowSection})`,
-                backgroundSize: "100% 100%",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: " center",
-                padding: "2rem",
-              }}
-            >
-              <div className="flex justify-start mb-8 text-5xl">
-                <StyledText text="garden" />
-              </div>
-
-              <p className="text-left  max-w-prose">
-                The <b>Garden</b> page is your relaxation space where you can watch your plants grow over time! Once the timer is up the <b>Mystery Plant</b> is ready to harvest. What will it be? Only one
-                way to find out!
-              </p>
-            </div>
-          </section>
         </div>
+
       </Layout>
     </>
   );

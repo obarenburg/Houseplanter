@@ -29,15 +29,15 @@ const Navbar = () => {
         <ul className="flex space-x-6">
         {user ? (
             <>
-              <li><Link to="/garden" className="font-['Kreon'] text-2xl text-white font-bold">Garden</Link></li>
-              <li><Link to="/collection" className="font-['Kreon'] text-2xl text-white font-bold">Collection</Link></li>
-              <li><Link to="/shop" className="font-['Kreon'] text-2xl text-white font-bold">Shop</Link></li>
-              <li><button onClick={() => { console.log('[Navbar] User logged out'); logout(); }} className="cursor-pointer hover:text-[#89926D] font-['Kreon'] text-2xl text-white font-bold">Sign-Out</button></li>
+              <li><Link to="/garden" className="font-['Fredoka'] text-2xl text-white font-semibold">Window</Link></li>
+              <li><Link to="/collection" className="font-['Fredoka'] text-2xl text-white font-semibold">Collection</Link></li>
+              <li><Link to="/shop" className="font-['Fredoka'] text-2xl text-white font-semibold">Shop</Link></li>
+              <li><button onClick={() => { console.log('[Navbar] User logged out'); logout(); }} className="cursor-pointer hover:text-[#89926D] font-['Fredoka'] text-2xl text-white font-semibold">Sign-Out</button></li>
             </>
           ) : (
             <>
-              <li><Link to="/createUser" className="font-['Kreon'] text-2xl text-white font-bold">Sign-Up</Link></li>
-              <li><Link to="/login" className="font-['Kreon'] text-2xl text-white font-bold">Sign-In</Link></li>
+              <li><Link to="/createUser" className="font-['Fredoka'] text-2xl text-white font-semibold">Sign-Up</Link></li>
+              <li><Link to="/login" className="font-['Fredoka'] text-2xl text-white font-semibold">Sign-In</Link></li>
             </>
           )}
         </ul>
