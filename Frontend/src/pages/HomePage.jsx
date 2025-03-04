@@ -24,7 +24,7 @@ export default function Home() {
     <>
       <Layout>
         <div
-          className="rounded-[9px] min-h-[70vh] max-h-[60vh] relative mt-8 mb-8 flex flex-col items-center scale-100 overflow-auto"
+          className="rounded-[9px] relative mt-8 mb-8 flex flex-col items-center scale-100 overflow-hidden min-h-[70vh] max-h-[80vh]"
           style={{
             backgroundColor: "#C4DEB4",
             backgroundSize: "cover",
