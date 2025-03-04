@@ -59,7 +59,7 @@ const CreateAccount = () => {
           }}
         >
           <div
-            className="min-w-[80%] h mt-20 m-10"
+            className="mt-20 m-10"
             style={{
               backgroundImage: `url(${createAccount})`,
               backgroundSize: 'cover',
