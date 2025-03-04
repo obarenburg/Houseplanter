@@ -11,6 +11,7 @@ import Layout from '../../Layout';
 import axios from "axios";
 import Timer from '../Timer/Timer';
 import CollectedPlantCard from "../PlantCard"
+import ChooseSeed from './ChooseSeed';
 
 const timeFormat = (input) => {
     const minutes = Math.floor(input / 60);
@@ -21,9 +22,9 @@ const timeFormat = (input) => {
 function Gamble() {
     const { user, gameData, getUserGameData } = useAuth();
 
-    const [plantStatus, setPlantStatus] = useState("idle"); // idle, growing, ready, collected
+    const [plantStatus, setPlantStatus] = useState("idle"); // idle, choosing, growing, ready, collected
     const [startTime, setStartTime] = useState(0);
-    const [growthTime, setGrowthTime] = useState(30);
+    const [growthTime, setGrowthTime] = useState("");
     const [buttonText, setButtonText] = useState("Plant");
     const [timerValue, setTimerValue] = useState("Plant");
     const [collectedPlant, setCollectedPlant] = useState(null)
@@ -60,13 +61,31 @@ function Gamble() {
     //  - Set the start time
     //  - Save to localStorage for persistence
     //  - Update UI for growing state
-    const plantSeed = () => {
+    const plantSeed = async (seedType) => {
+        let selectedGrowthTime = 5;
+
+        if (seedType === "commonSeed") {
+            selectedGrowthTime = 30;
+        } else if (seedType === "uncommonSeed") {
+            selectedGrowthTime = 60;
+        } else {
+            selectedGrowthTime = 90;
+        }
+
         const currentTime = Date.now();
         setStartTime(currentTime);
-        localStorage.setItem('plantStartTime', currentTime); 
+        setGrowthTime(selectedGrowthTime);
+
+        localStorage.setItem('plantStartTime', currentTime);
+        localStorage.setItem('growthTime', selectedGrowthTime);
+
         setPlantStatus("growing");
         setButtonText(" ");
         setTimerValue(timeFormat(growthTime));
+    };
+
+    const chooseSeed = () => {
+        setPlantStatus("choosing");
     };
 
     //  Handle Collecting the Plant
@@ -96,7 +115,7 @@ function Gamble() {
             });
 
             getUserGameData(user.user.id, user.jwt);
-            
+
             setCollectedPlant({
                 name: selectedPlant.type,
             });
@@ -123,7 +142,7 @@ function Gamble() {
                     setButtonText(" ");
                     setTimerValue("Collect");
                     localStorage.removeItem('plantStartTime');
-                
+
                 } else {
                     setTimerValue(timeFormat(remainingTime));
                 }
@@ -135,13 +154,17 @@ function Gamble() {
     //  Load Start Time from localStorage on Component Mount
     useEffect(() => {
         const savedStartTime = localStorage.getItem('plantStartTime');
-        if (savedStartTime) {
+        const savedGrowthTime = localStorage.getItem('growthTime');
+    
+        if (savedStartTime && savedGrowthTime) {
             const startTimeFromStorage = Number(savedStartTime);
+            const growthTimeFromStorage = Number(savedGrowthTime);
             const timeDifference = Math.floor((Date.now() - startTimeFromStorage) / 1000);
-            const remainingTime = growthTime - timeDifference;
-
+            const remainingTime = growthTimeFromStorage - timeDifference;
+    
             if (remainingTime > 0) {
                 setStartTime(startTimeFromStorage);
+                setGrowthTime(growthTimeFromStorage);
                 setPlantStatus("growing");
                 setTimerValue(timeFormat(remainingTime));
                 setButtonText(" ");
@@ -150,12 +173,16 @@ function Gamble() {
                 setButtonText(" ");
                 setTimerValue("Collect");
                 localStorage.removeItem('plantStartTime');
+                localStorage.removeItem('growthTime');
             }
         }
     }, []);
+    
 
     const handleAction = () => {
         if (plantStatus === "idle") {
+            chooseSeed();
+        } else if (plantStatus === "choosing") {
             plantSeed();
         } else if (plantStatus === "ready") {
             collectPlant();
@@ -163,7 +190,7 @@ function Gamble() {
     };
 
     return (
-            <Layout>
+        <Layout>
             <div>
                 {user?.user ? (
                     <div className='bg-[#D6E0B9] flex justify-center'>
@@ -192,6 +219,10 @@ function Gamble() {
 
                 <img src={plantStatus === "idle" ? emptyPot : commonPot} className="absolute w-full h-full bottom-0 object-cover" />
 
+                {plantStatus === "choosing" && (
+                    <ChooseSeed onSelectSeed={(seedType) => plantSeed(seedType)} />
+                )}
+
                 {plantStatus === "growing" && (
                     <img src={commonPot} className="absolute w-full h-full bottom-0 object-cover" />
                 )}
@@ -202,11 +233,12 @@ function Gamble() {
 
                 {plantStatus === "collected" && (
                     <div className="absolute inset-0 flex items-center justify-center z-50 -mt-60">
-                        <CollectedPlantCard 
-                            plantName={collectedPlant.name} 
+                        <CollectedPlantCard
+                            plantName={collectedPlant.name}
                         />
                     </div>
                 )}
+
             </div>
         </Layout>
     );

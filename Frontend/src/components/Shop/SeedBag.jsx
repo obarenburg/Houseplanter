@@ -9,6 +9,7 @@ import Sell from './Sell';
 import Buy from './Buy';
 import buyTab from '../../assets/BuyTab.svg';
 import sellTab from '../../assets/SellTab.svg';
+import axios from 'axios';
 
 function SeedBag() {
     const [shopType, setShopType] = useState("Sell");
@@ -17,9 +18,37 @@ function SeedBag() {
     const [uncommonSeeds, setUncommonSeeds] = useState(0);
     const [rareSeeds, setRareSeeds] = useState(0);
 
-    const fetchUserMoney = async () => {
+    const { user, gameData, getUserGameData } = useAuth();
 
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get(`https://houseplanter-backend.onrender.com/api/user-game-datas?filters[user][id][$eq]=${user.user.id}&populate=inventory_items`, {
+                headers: {
+                    Authorization: `Bearer ${user.jwt}`,
+                }
+            });
+
+            const data = response.data.data[0];
+            setMoney(data.money);
+
+            const inventoryItems = data.inventory_items || [];
+
+            let commonSeed = inventoryItems.find(item => item.itemName === "CommonSeed");
+            let uncommonSeed = inventoryItems.find(item => item.itemName === "UncommonSeed");
+            let rareSeed = inventoryItems.find(item => item.itemName === "RareSeed");
+
+            setCommonSeeds(commonSeed ? commonSeed.quantity : 0);
+            setUncommonSeeds(uncommonSeed ? uncommonSeed.quantity : 0);
+            setRareSeeds(rareSeed ? rareSeed.quantity : 0);
+
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
     };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
 
     return (
         <div className='flex flex-col items-center'>
