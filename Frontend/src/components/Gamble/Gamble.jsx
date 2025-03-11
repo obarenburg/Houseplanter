@@ -12,6 +12,7 @@ import axios from "axios";
 import Timer from '../Timer/Timer';
 import CollectedPlantCard from "../PlantCard"
 import ChooseSeed from './ChooseSeed';
+import readyPlant from "../ReadyPlantImage"
 
 const timeFormat = (input) => {
     const minutes = Math.floor(input / 60);
@@ -228,7 +229,9 @@ function Gamble() {
                 )}
 
                 {plantStatus === "ready" && (
-                    <img src={windowSnakePlant} className="absolute w-full h-full bottom-0 object-cover" />
+                        <readyPlant
+                        plantName={collectedPlant.name}
+                    />
                 )}
 
                 {plantStatus === "collected" && (
