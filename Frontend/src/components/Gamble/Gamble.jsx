@@ -208,11 +208,11 @@ function Gamble() {
                 )}
 
                 {!buttonText && plantStatus === "collected" && (
-                    <img
-                        src={collectedSnakePlant}
-                        className="absolute w-3/4 h-3/4 p-[5em] top-1/8 left-1/8 backdrop-blur-sm rounded-[2%] transition-all duration-700"
-                        alt="Collected Plant"
-                    />
+                    <div className="absolute w-3/4 h-3/4 p-[5em] top-1/8 left-1/8 backdrop-blur-sm rounded-[2%] transition-all duration-700">
+                        <readyPlant
+                        plantName={collectedPlant.name}
+                        />
+                    </div>
                 )}
 
                 {/* change images to be taken from strapi */}
