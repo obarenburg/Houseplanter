@@ -61,14 +61,6 @@
         "rare"
       ]
     },
-    "type": {
-      "type": "enumeration",
-      "enum": [
-        "snake plant",
-        "monstera",
-        "spider plant"
-      ]
-    },
     "growthTime": {
       "type": "biginteger"
     },
@@ -87,6 +79,14 @@
         "files",
         "videos",
         "audios"
+      ]
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "snake plant",
+        "monstera",
+        "spider plant"
       ]
     }
   }
