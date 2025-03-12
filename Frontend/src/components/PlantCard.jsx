@@ -63,7 +63,7 @@ const CollectedPlantCard = ({plantName}) => {
     return <p className="text-center text-xl mt-12 text-red-500">{error}</p>;
 
   const {name, scientificName, image, rarity} = plant;
-  const collectionImage = image.find (img => img.name.includes ('collection'));
+  const collectionImage = image.find (img => img.name.includes ('collection') || img.name.includes ('final'));
   const imageUrl = collectionImage ? collectionImage.url : null;
 
   return (
