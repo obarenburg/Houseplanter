@@ -52,16 +52,20 @@ function ChooseSeed({ onSelectSeed }) {
     const updateSeeds = async (seedType) => {
         let itemDocId;
         let newQuantity;
+        let rarity;
 
         if ((seedType === "commonSeed") && ((commonSeeds-1) >= 0)) {
             newQuantity = commonSeeds - 1;
             itemDocId = commonSeedDocId;
+            rarity = "common";
         } else if ((seedType === "uncommonSeed") && ((uncommonSeeds-1) >= 0)) {
             newQuantity = uncommonSeeds - 1;
             itemDocId = uncommonSeedDocId;
+            rarity = "uncommon";
         } else if ((seedType === "rareSeed") && ((rareSeeds-1) >= 0)) {
             newQuantity = rareSeeds - 1;
             itemDocId = rareSeedDocId;
+            rarity = "rare";
         } else {
             return;
         }
@@ -75,7 +79,7 @@ function ChooseSeed({ onSelectSeed }) {
             });
         }
 
-        onSelectSeed(seedType);
+        onSelectSeed({ type: seedType, rarity });
     }
 
     useEffect(() => {

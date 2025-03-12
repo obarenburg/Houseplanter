@@ -66,8 +66,6 @@ const CollectedPlantCard = ({plantName}) => {
   const collectionImage = image.find (img => img.name.includes ('collection'));
   const imageUrl = collectionImage ? collectionImage.url : null;
 
-  console.log(imageUrl)
-
   return (
     <div
       className="flex flex-col items-center justify-center p-4 transition-transform transform hover:scale-105 hover:shadow-2x cursor-pointer"
