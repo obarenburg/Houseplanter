@@ -748,7 +748,9 @@ export interface ApiUserPlantUserPlant extends Struct.CollectionTypeSchema {
     rarity: Schema.Attribute.Enumeration<['common', 'uncommon', 'rare']>;
     TimerStartTime: Schema.Attribute.BigInteger &
       Schema.Attribute.DefaultTo<'0'>;
-    type: Schema.Attribute.Enumeration<['snake plant', 'monstera']>;
+    type: Schema.Attribute.Enumeration<
+      ['snake plant', 'monstera', 'spider plant']
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

@@ -42,7 +42,8 @@
       "type": "enumeration",
       "enum": [
         "snake plant",
-        "monstera"
+        "monstera",
+        "spider plant"
       ]
     },
     "plant": {
