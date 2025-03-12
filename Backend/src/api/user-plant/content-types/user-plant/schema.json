@@ -43,7 +43,8 @@
       "enum": [
         "snake plant",
         "monstera",
-        "spider plant"
+        "spider plant",
+        "begonia"
       ]
     },
     "plant": {

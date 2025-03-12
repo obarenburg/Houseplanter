@@ -572,7 +572,7 @@ export interface ApiPlantPlant extends Struct.CollectionTypeSchema {
     seeds: Schema.Attribute.Relation<'manyToMany', 'api::seed.seed'>;
     specialFeatures: Schema.Attribute.Text;
     type: Schema.Attribute.Enumeration<
-      ['snake plant', 'monstera', 'spider plant']
+      ['snake plant', 'monstera', 'spider plant', 'begonia']
     >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -749,7 +749,7 @@ export interface ApiUserPlantUserPlant extends Struct.CollectionTypeSchema {
     TimerStartTime: Schema.Attribute.BigInteger &
       Schema.Attribute.DefaultTo<'0'>;
     type: Schema.Attribute.Enumeration<
-      ['snake plant', 'monstera', 'spider plant']
+      ['snake plant', 'monstera', 'spider plant', 'begonia']
     >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
