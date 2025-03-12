@@ -551,6 +551,10 @@ export interface ApiPlantPlant extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.String;
+    growthStage: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
     growthTime: Schema.Attribute.BigInteger;
     image: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
@@ -567,7 +571,9 @@ export interface ApiPlantPlant extends Struct.CollectionTypeSchema {
     scientificName: Schema.Attribute.String;
     seeds: Schema.Attribute.Relation<'manyToMany', 'api::seed.seed'>;
     specialFeatures: Schema.Attribute.Text;
-    type: Schema.Attribute.Enumeration<['snake plant', 'monstera']>;
+    type: Schema.Attribute.Enumeration<
+      ['snake plant', 'monstera', 'spider plant']
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

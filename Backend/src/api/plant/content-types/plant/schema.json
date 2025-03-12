@@ -65,7 +65,8 @@
       "type": "enumeration",
       "enum": [
         "snake plant",
-        "monstera"
+        "monstera",
+        "spider plant"
       ]
     },
     "growthTime": {
@@ -76,6 +77,17 @@
       "relation": "oneToMany",
       "target": "api::user-plant.user-plant",
       "mappedBy": "plant"
+    },
+    "growthStage": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }
