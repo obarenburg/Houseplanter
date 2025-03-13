@@ -63,7 +63,8 @@ export const AuthProvider = ({children}) => {
       });
 
       console.log("[createDefaultGameData] Response:", response.data);
-      alert("Default game data created for user!");
+      // For Testing
+      // alert("Default game data created for user!");
 
       getUserGameData(userId, jwt);
     } catch (error) {

@@ -1,49 +1,60 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../Layout';
-import {Link, useNavigate} from 'react-router-dom';
-import {useAuth} from '../AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 import toast from 'react-hot-toast';
 
 import bgGrid from '../assets/svg/background-checks.svg';
 import createAccount from '../assets/createaccount.svg';
+import loadingGif from '../assets/loadingGif.gif'
 
 const CreateAccount = () => {
-  const {login} = useAuth ();
-  const navigate = useNavigate ();
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const register = async event => {
-    event.preventDefault ();
+    if (loading) return;
+    setLoading(true);
+    try {
+      event.preventDefault();
 
-    const formData = new FormData (event.target);
-    const jsonData = Object.fromEntries (formData);
-    console.log ('[CreateAccount] Sending registration request:', jsonData);
+      const formData = new FormData(event.target);
+      const jsonData = Object.fromEntries(formData);
+      console.log('[CreateAccount] Sending registration request:', jsonData);
 
-    const reqOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify (jsonData),
-    };
+      const reqOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(jsonData),
+      };
 
-    const req = await fetch (
-      'https://houseplanter-backend.onrender.com/api/auth/local/register',
-      reqOptions
-    );
+      const req = await fetch(
+        'https://houseplanter-backend.onrender.com/api/auth/local/register',
+        reqOptions
+      );
 
-    const res = await req.json ();
-    console.log ('[CreateAccount] Response received:', res);
+      const res = await req.json();
+      console.log('[CreateAccount] Response received:', res);
 
-    if (res.error) {
-      toast.error (res.error.message);
-      return;
-    }
+      if (res.error) {
+        toast.error(res.error.message);
+        return;
+      }
 
-    if (res.jwt && res.user) {
-      toast.success ('Registered successfully!');
-      login (res);
-      navigate ('/');
+      if (res.jwt && res.user) {
+        toast.success('Registered successfully!');
+        login(res);
+        navigate('/');
+      }
+    } catch {
+      console.error("Error signing up", error);
+      toast.error('Registration Failed!');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,6 +69,11 @@ const CreateAccount = () => {
             backgroundPosition: 'center',
           }}
         >
+          {loading && (
+          <div className="fixed inset-0 p-5 flex items-center shadow-md justify-center z-50 bg-white/30 rounded-3xl transition-all duration-500 ease-in-out">
+              <img src={loadingGif} alt="Loading..." className='shadow-2xl rounded-2xl w-85'/>
+            </div>
+          )}
           <div
             className="mt-20 m-10"
             style={{
@@ -68,15 +84,15 @@ const CreateAccount = () => {
           >
             <div>
               <div className="w-[710.06px] h-[702.19px] relative">
-                <div className="left-[284px] top-[461px] absolute text-white text-4xl font-semibold font-['Fredoka']">
+                <div className="left-[282px] top-[461px] absolute text-white text-4xl font-semibold font-['Fredoka']">
                   already have <br /> an account? sign-in
                 </div>
-                <div className="left-[286px] top-[461px] absolute text-[#fa9768] text-4xl font-semibold font-['Fredoka']">
+                <div className="left-[284px] top-[461px] absolute text-[#fa9768] text-4xl font-semibold font-['Fredoka']">
                   already have <br /> an account?
                 </div>
                 <Link
                   to="/login"
-                  className="text-[#FA9768] hover:underline left-[470px] top-[461px] absolute text-4xl font-semibold font-['Fredoka']"
+                  className="text-[#FA9768] hover:underline left-[488px] top-[461px] absolute text-4xl font-semibold font-['Fredoka']"
                 >
                   <br /> sign-in
                 </Link>
@@ -128,6 +144,7 @@ const CreateAccount = () => {
                         justify-center items-center gap-2 inline-flex text-center text-white text-2xl font-semibold font-['Fredoka'] 
                         leading-[37.20px] cursor-pointer hover:bg-[#acc48b]"
                       type="submit"
+                      disabled={loading}
                     >
                       Submit
                     </button>

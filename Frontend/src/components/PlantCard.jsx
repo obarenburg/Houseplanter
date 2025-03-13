@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, {useState, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faStar} from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import loadingGif from '../assets/loadingGif.gif'
 
 const renderStars = rarity => {
   let starCount;
@@ -20,7 +21,7 @@ const renderStars = rarity => {
     default:
       starCount = 0;
   }
-  return [...Array (starCount)].map ((_, index) => (
+  return [...Array(starCount)].map((_, index) => (
     <FontAwesomeIcon
       key={index}
       icon={faStar}
@@ -29,47 +30,50 @@ const renderStars = rarity => {
   ));
 };
 
-const CollectedPlantCard = ({plantName}) => {
-  const [plant, setPlant] = useState (null);
-  const [loading, setLoading] = useState (true);
-  const [error, setError] = useState (null);
-  const navigate = useNavigate ();
+const CollectedPlantCard = ({ plantName }) => {
+  const [plant, setPlant] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  useEffect (
+  useEffect(
     () => {
-      fetch (
+      fetch(
         `https://houseplanter-backend.onrender.com/api/plants?filters[type]=${plantName}&populate=*`
       )
-        .then (response => response.json ())
-        .then (data => {
+        .then(response => response.json())
+        .then(data => {
           if (!data.data || data.data.length === 0) {
-            setError ('Plant not found');
+            setError('Plant not found');
           } else {
-            setPlant (data.data[0]);
+            setPlant(data.data[0]);
           }
-          setLoading (false);
+          setLoading(false);
         })
-        .catch (error => {
-          console.error ('Error fetching plant:', error);
-          setError ('Failed to load plant data.');
-          setLoading (false);
+        .catch(error => {
+          console.error('Error fetching plant:', error);
+          setError('Failed to load plant data.');
+          setLoading(false);
         });
     },
     [plantName]
   );
 
-  if (loading) return <p className="text-center text-xl mt-12">Loading...</p>;
+  if (loading) return 
+    <div className="fixed inset-0 p-5 flex items-center shadow-md justify-center z-50 bg-white/30 rounded-3xl transition-all duration-500 ease-in-out">
+      <img src={loadingGif} alt="Loading..." className='shadow-2xl rounded-2xl w-85' />
+    </div>;
   if (error)
     return <p className="text-center text-xl mt-12 text-red-500">{error}</p>;
 
-  const {name, scientificName, image, rarity} = plant;
-  const collectionImage = image.find (img => img.name.includes ('collection') || img.name.includes ('final'));
+  const { name, scientificName, image, rarity } = plant;
+  const collectionImage = image.find(img => img.name.includes('collection') || img.name.includes('final'));
   const imageUrl = collectionImage ? collectionImage.url : null;
 
   return (
     <div
       className="flex flex-col items-center justify-center p-4 transition-transform transform hover:scale-105 hover:shadow-2x cursor-pointer"
-      onClick={() => navigate ('/collection')}
+      onClick={() => navigate('/collection')}
     >
 
       <h1
@@ -85,10 +89,10 @@ const CollectedPlantCard = ({plantName}) => {
       <div className="flex flex-col items-center justify-center bg-gradient-to-br from-[#f0f8e2] to-[#d6e0b9] rounded-2xl shadow-xl border border-[#c5d3a4] relative w-64 h-80">
         {imageUrl
           ? <img
-              src={imageUrl}
-              alt={name}
-              className="h-[20rem] w-auto object-contain"
-            />
+            src={imageUrl}
+            alt={name}
+            className="h-[20rem] w-auto object-contain"
+          />
           : <p className="text-gray-500">No Image Available</p>}
 
         <h2 className="text-2xl font-bold text-[#2b6b2b] capitalize font-[Slackey] tracking-wide drop-shadow-md -mt-10">
@@ -100,7 +104,7 @@ const CollectedPlantCard = ({plantName}) => {
         </h3>
 
         <div className="absolute top-2 right-2 flex space-x-1 drop-shadow-md">
-          {renderStars (rarity)}
+          {renderStars(rarity)}
         </div>
       </div>
 

@@ -39,38 +39,51 @@ export default function Home() {
 
             {/* Button */}
             {user ? (
-              <div className="absolute w-[15%] h-[18%] bg-[#fdee96] rounded-3xl flex items-center justify-center top-[40%] left-[20%] hover:bg-yellow-100">
-                <Link
-                  to="/garden"
-                  className="text-[#316e54] text-[200%] font-['Fredoka'] font-semibold"
-                  style={{
-                    color: "#316e54",
-                  }}
-                >
+
+              <Link
+                to="/garden"
+                className="text-[#316e54] text-[200%] font-['Fredoka'] font-semibold"
+                style={{
+                  color: "#316e54",
+                }}
+              >
+                <div className="absolute w-[15%] h-[18%] bg-[#fdee96] rounded-3xl flex items-center justify-center top-[40%] left-[20%] hover:bg-yellow-100 transition-transform ease-in-out 
+               duration-500 hover:scale-110">
                   START
-                </Link>
-              </div>
+                </div>
+              </Link>
             ) : (
-              <div className="absolute w-[15%] h-[18%] bg-[#fdee96] rounded-3xl flex items-center justify-center top-[40%] left-[20%] hover:bg-yellow-100">
-                <Link
-                  to="/createUser"
-                  className="text-[#316e54] text-[200%] font-['Fredoka'] font-semibold"
-                  style={{
-                    color: "#316e54",
-                  }}
-                >
+              <Link
+                to="/createUser"
+                className="text-[#316e54] text-[200%] font-['Fredoka'] font-semibold"
+                style={{
+                  color: "#316e54",
+                }}
+              >
+                <div className="absolute w-[15%] h-[18%] bg-[#fdee96] rounded-3xl flex items-center justify-center top-[40%] left-[20%] hover:bg-yellow-100">
                   START
-                </Link>
-              </div>
+                </div>
+              </Link>
             )}
 
             {/* Orange Flowers */}
+            <div>
+              <img
+                className="absolute top-[35%] right-[10%] w-[25%] h-auto 
+               transition-transform ease-in-out 
+               duration-500 hover:scale-110 
+               active:rotate-720 active:duration-5000"
+                draggable="false"
+                src={orangeFlower}
+              />
+            </div>
+
             <img
-              className="absolute top-[35%] right-[10%] w-[25%] h-auto"
-              src={orangeFlower}
-            />
-            <img
-              className="absolute top-[75%] right-[35%] w-[15%] h-auto"
+              className="absolute top-[75%] right-[35%] w-[15%] h-auto
+               transition-transform ease-in-out 
+               duration-500 hover:scale-130 
+               active:rotate-180 active:duration-1000"
+              draggable="false"
               src={orangeFlowerSmall}
             />
 
@@ -80,7 +93,7 @@ export default function Home() {
               src={homeContainerLeft}
             />
             <div className="absolute top-[137%] left-[30%] w-[19.5%] text-[150%]/[125%] h-auto text-yellow-50 font-['Fredoka'] font-semibold text-center">
-                Plant seeds at your <Link to="/garden" className="font-['Fredoka'] px-[4%] bg-[#6C9251] rounded-3xl top-[40%] left-[20%] hover:bg-yellow-100">Window</Link> and they&apos;ll grow into a random plant over time
+              Plant seeds at your <Link to="/garden" className="font-['Fredoka'] px-[4%] bg-[#6C9251] rounded-3xl top-[40%] left-[20%] hover:bg-yellow-100">Window</Link> and they&apos;ll grow into a random plant over time
             </div>
 
             <img
@@ -88,7 +101,7 @@ export default function Home() {
               src={homeContainerRight}
             />
             <div className="absolute top-[174%] right-[23%] w-[19.5%] text-[150%]/[125%] h-auto text-yellow-50 font-['Fredoka'] font-semibold text-center">
-                Learn about the plants you grow in your <Link to="/collection" className="font-['Fredoka'] px-[4%] bg-[#6C9251] rounded-3xl top-[40%] left-[20%] hover:bg-yellow-100">Collection</Link>, and customize your shelf displays
+              Learn about the plants you grow in your <Link to="/collection" className="font-['Fredoka'] px-[4%] bg-[#6C9251] rounded-3xl top-[40%] left-[20%] hover:bg-yellow-100">Collection</Link>, and customize your shelf displays
             </div>
 
             <img
@@ -96,11 +109,15 @@ export default function Home() {
               src={homeContainerLeft}
             />
             <div className="absolute top-[220%] left-[30%] w-[18%] text-[150%]/[125%] h-auto text-yellow-50 font-['Fredoka'] font-semibold text-center">
-                Buy different types of seeds in the <Link to="/shop" className="font-['Fredoka'] px-[4%] bg-[#6C9251] rounded-3xl top-[40%] left-[20%] hover:bg-yellow-100">Shop</Link> for different results
+              Buy different types of seeds in the <Link to="/shop" className="font-['Fredoka'] px-[4%] bg-[#6C9251] rounded-3xl top-[40%] left-[20%] hover:bg-yellow-100">Shop</Link> for different results
             </div>
             {/* Pink Flower */}
             <img
-              className="absolute top-[150%] left-[10%] w-[25%] h-auto"
+              className="absolute top-[150%] left-[10%] w-[25%] h-auto
+               transition-transform ease-in-out 
+               duration-500 hover:scale-120 
+               active:rotate-360 active:duration-3000"
+              draggable="false"
               src={pinkFlower}
             />
           </div>

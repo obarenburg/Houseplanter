@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import flower from '../../assets/Flower.svg';
 import sellButton from '../../assets/Sell.svg';
 import { useAuth } from '../../AuthContext';
+import loadingGif from '../../assets/loadingGif.gif'
 import axios from 'axios';
 
 function Sell({ money, setMoney }) {
@@ -13,8 +14,11 @@ function Sell({ money, setMoney }) {
 
     const [userPlants, setUserPlants] = useState([]);
     const [userDocId, setUserDocId] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const fetchUserData = async () => {
+        if (loading) return;
+        setLoading(true);
         try {
             console.log(user.user.id)
             const response = await axios.get(`https://houseplanter-backend.onrender.com/api/user-game-datas?filters[user][id][$eq]=${user.user.id}&populate=user_plants`, {
@@ -24,11 +28,13 @@ function Sell({ money, setMoney }) {
             });
 
             const data = response.data.data[0];
-            setMoney(data.money);
+            // setMoney(data.money);
             setUserPlants(data.user_plants);
             setUserDocId(data.documentId)
         } catch (error) {
             console.error("Error fetching user data:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -36,12 +42,26 @@ function Sell({ money, setMoney }) {
         fetchUserData();
     }, []);
 
+    const getPriceByRarity = (rarity) => {
+        switch (rarity) {
+            case 'common':
+                return 50;
+            case 'uncommon':
+                return 150;
+            case 'rare':
+                return 500;
+            default:
+                return 0;
+        }
+    };
 
     const handleSell = async (index, plant) => {
+        if (loading) return;
+        setLoading(true);
         try {
             const updatedPlants = userPlants.filter((_, i) => i !== index);
-            const newMoney = money + 100
-            
+            const newMoney = money + getPriceByRarity(plant.rarity)
+
             setUserPlants(updatedPlants);
             setMoney(newMoney);
 
@@ -72,42 +92,49 @@ function Sell({ money, setMoney }) {
             fetchUserData();
         } catch (error) {
             console.error("Error selling plant:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className='bg-[#ACC48B]'>
-                    <div className='py-[.5em] mb-[1em]'>
-                        {userPlants.length > 0 ? (
-                            userPlants.map((plant, index) => {
-                                console.log(`Plant ${index}:`, plant);
-                                if (plant.type != null) {
-                                    return (
-                                        <div className='!bg-gray-200 !flex !flex-row !p-0 !m-[1em] text-black list-none !rounded-t-md !border-0'>
-                                            <div className='bg-gray-400 !m-0'>
-                                                <img src={flower} alt="" className='p-[.5em] !w-30' />
-                                            </div>
-                                            <div className='!flex !flex-col !justify-between !gap-1 !h-full !w-full'>
-                                                <div className='!flex !justify-between'>
-                                                    <p className='!ml-2 text-xl font-bold font-["Kreon"]'>{plant.type}</p>
-                                                    <p className='!mr-2 text-xl font-bold font-["Kreon"]'>100$</p>
-                                                </div>
-                                                <div className='!flex !justify-between'>
-                                                    <p className='!ml-2 text-xl font-bold font-["Kreon"] !mt-auto'>{plant.rarity}</p>
-                                                    <div className='!flex !justify-end !mt-auto !ml-auto !w-30 cursor-pointer' onClick={() => handleSell(index, plant)}>
-                                                        <img src={sellButton} alt="" />
-                                                    </div>
-                                                </div>
+            {(loading) && (
+                <div className="fixed inset-0 p-5 flex items-center shadow-md justify-center z-150 bg-white/30 rounded-3xl transition-all duration-500 ease-in-out">
+                    <img src={loadingGif} alt="" className='shadow-2xl rounded-2xl w-85' />
+                </div>
+            )}
+            <div className='py-[.5em] mb-[1em]'>
+                {userPlants.length > 0 ? (
+                    userPlants.map((plant, index) => {
+                        console.log(`Plant ${index}:`, plant);
+                        if (plant.type != null) {
+                            return (
+                                <div className='!bg-gray-200 !flex !flex-row !p-0 !m-[1em] text-black list-none !rounded-t-md !border-0'>
+                                    <div className='bg-gray-400 !m-0'>
+                                        <img src={flower} alt="" className='p-[.5em] !w-30' />
+                                    </div>
+                                    <div className='!flex !flex-col !justify-between !gap-1 !h-full !w-full'>
+                                        <div className='!flex !justify-between'>
+                                            <p className='!ml-2 text-xl font-bold font-["Kreon"]'>{plant.type}</p>
+                                            <p className='!mr-2 text-xl font-bold font-["Kreon"]'>${getPriceByRarity(plant.rarity)}</p>
+                                        </div>
+                                        <div className='!flex !justify-between'>
+                                            <p className='!ml-2 text-xl font-bold font-["Kreon"] !mt-auto'>{plant.rarity}</p>
+                                            <div className='!flex !justify-end !mt-auto !ml-auto !w-30 cursor-pointer' onClick={() => handleSell(index, plant)}>
+                                                <img src={sellButton} alt="" />
                                             </div>
                                         </div>
-                                    );
-                                }
-                            })
-                        ) : (
-                            <p>No plants collected yet.</p>
-                        )}
-                    </div>
-                </div>
+                                    </div>
+                                </div>
+                            );
+                        }
+                    })
+                ) : (
+                    <p>No plants collected yet.</p>
+                )}
+            </div>
+        </div>
     )
 }
 

@@ -9,6 +9,7 @@ import Sell from './Sell';
 import Buy from './Buy';
 import buyTab from '../../assets/BuyTab.svg';
 import sellTab from '../../assets/SellTab.svg';
+import loadingGif from '../../assets/loadingGif.gif'
 import axios from 'axios';
 
 function SeedBag() {
@@ -17,10 +18,12 @@ function SeedBag() {
     const [commonSeeds, setCommonSeeds] = useState(0);
     const [uncommonSeeds, setUncommonSeeds] = useState(0);
     const [rareSeeds, setRareSeeds] = useState(0);
-
+    const [loading, setLoading] = useState(false);
     const { user, gameData, getUserGameData } = useAuth();
 
     const fetchUserData = async () => {
+        if (loading) return;
+        setLoading(true);
         try {
             const response = await axios.get(`https://houseplanter-backend.onrender.com/api/user-game-datas?filters[user][id][$eq]=${user.user.id}&populate=inventory_items`, {
                 headers: {
@@ -43,6 +46,8 @@ function SeedBag() {
 
         } catch (error) {
             console.error("Error fetching user data:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -52,6 +57,11 @@ function SeedBag() {
 
     return (
         <div className='flex flex-col items-center'>
+            {(loading) && (
+                <div className="fixed inset-0 p-5 flex items-center shadow-md justify-center z-150 bg-white/30 rounded-3xl transition-all duration-500 ease-in-out">
+                    <img src={loadingGif} alt="" className='shadow-2xl rounded-2xl w-85' />
+                </div>
+            )}
             <div className="bg-cover bg-center flex flex-row m-[1em] p-[2em]" style={{ backgroundImage: `url(${seedBagBackground})` }}>
                 <div>
                     <img src={seedBag} alt="Seed Bag" className="p-4 w-100 h-80 flex-shrink-0" />

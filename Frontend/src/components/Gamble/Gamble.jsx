@@ -9,6 +9,7 @@ import axios from "axios";
 import Timer from '../Timer/Timer';
 import CollectedPlantCard from "../PlantCard";
 import ChooseSeed from './ChooseSeed';
+import loadingGif from '../../assets/loadingGif.gif'
 
 // Helper functions
 const formatTime = (seconds) => {
@@ -29,11 +30,12 @@ function Gamble() {
     const [timerValue, setTimerValue] = useState("Plant");
     const [buttonText, setButtonText] = useState("Plant");
     const [isCollecting, setIsCollecting] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     // plant data
     const [selectedPlant, setSelectedPlant] = useState(null);
     const [collectedPlant, setCollectedPlant] = useState(null);
-    
+
     // visual elements
     const [potImage, setPotImage] = useState(emptyPot);
     const [growthStages, setGrowthStages] = useState([]);
@@ -42,6 +44,8 @@ function Gamble() {
 
     // Calls Seeds API to get plants of that seed + that seed's pot image
     const fetchSeedDetails = async (seedRarity) => {
+        if (loading) return;
+        setLoading(true);
         try {
             const response = await axios.get(`${API_BASE_URL}/seeds/?filters[rarity][$eq]=${seedRarity}&populate=*`, {
                 headers: { Authorization: `Bearer ${user.jwt}` },
@@ -51,62 +55,77 @@ function Gamble() {
             const plantTypes = seed?.plant_types || [];
             const potImage = seed?.pot?.url || emptyPot;
 
-            return { 
+            return {
                 plantTypes: Array.isArray(plantTypes) ? plantTypes : [plantTypes],
                 potImage
             };
         } catch (error) {
             console.error("Error fetching seed details:", error.response?.data || error);
             return { plantTypes: [], potImage: emptyPot };
+        } finally {
+            setLoading(false);
         }
     };
 
     // Calls Plant API to get all plant details of selected plant
     const fetchPlantDetails = async (plantType) => {
+        if (loading) return;
+        setLoading(true);
         try {
             const response = await axios.get(
                 `${API_BASE_URL}/plants/?filters[type][$eq]=${plantType}&populate=growthStage&populate=image`,
                 { headers: { Authorization: `Bearer ${user.jwt}` } }
             );
-            
+
             return response.data.data[0];
         } catch (error) {
             console.error("Error fetching plant details:", error);
             return null;
+        } finally {
+            setLoading(false);
         }
     };
 
     // Selects a random plant based on seed
     const selectRandomPlant = async (plantTypes, potImage) => {
-        if (!plantTypes.length) return null;
-        
-        const randomIndex = Math.floor(Math.random() * plantTypes.length);
-        const selectedPlant = plantTypes[randomIndex];
-        
-        if (!selectedPlant) return null;
-        
-        const plantData = await fetchPlantDetails(selectedPlant.type);
-        if (!plantData) return selectedPlant;
-        
-        const windowImage = plantData.image.find(img => img.name.includes("window"));
-        const growthImages = plantData.growthStage?.map(stage => stage.url) || [];
-        
-        const allStages = [potImage, ...growthImages, windowImage?.url || ""];
-        const finalImageUrl = windowImage?.url || "";
-        const growthTimeValue = Number(plantData.growthTime);
-        
-        setGrowthStages(allStages);
-        setCurrentGrowthStage(potImage);
-        setFinalImage(finalImageUrl);
-        setGrowthTime(growthTimeValue);
-        
-        return {
-            ...selectedPlant,
-            image: windowImage ? windowImage.url : "",
-            growthTime: growthTimeValue,
-            growthStages: allStages,
-            finalImage: finalImageUrl
-        };
+        if (loading) return;
+        setLoading(true);
+        try {
+            if (!plantTypes.length) return null;
+
+            const randomIndex = Math.floor(Math.random() * plantTypes.length);
+            const selectedPlant = plantTypes[randomIndex];
+
+            if (!selectedPlant) return null;
+
+            const plantData = await fetchPlantDetails(selectedPlant.type);
+            if (!plantData) return selectedPlant;
+
+            const windowImage = plantData.image.find(img => img.name.includes("window"));
+            const growthImages = plantData.growthStage?.map(stage => stage.url) || [];
+
+            const allStages = [potImage, ...growthImages, windowImage?.url || ""];
+            const finalImageUrl = windowImage?.url || "";
+            const growthTimeValue = Number(plantData.growthTime);
+
+            setGrowthStages(allStages);
+            setCurrentGrowthStage(potImage);
+            setFinalImage(finalImageUrl);
+            setGrowthTime(growthTimeValue);
+
+            return {
+                ...selectedPlant,
+                image: windowImage ? windowImage.url : "",
+                growthTime: growthTimeValue,
+                growthStages: allStages,
+                finalImage: finalImageUrl
+            };
+        } catch (error) {
+            console.error("Error selecting plant:", error);
+            return null;
+        } finally {
+            setLoading(false);
+        }
     };
 
     const savePlantToLocalStorage = (plant, currentTime) => {
@@ -141,16 +160,16 @@ function Gamble() {
     const plantSeed = async (seed) => {
         const { plantTypes, potImage } = await fetchSeedDetails(seed.rarity);
         setPotImage(potImage);
-    
+
         const plant = await selectRandomPlant(plantTypes, potImage);
         if (!plant) return;
-        
+
         setSelectedPlant(plant);
-        
+
         const currentTime = Date.now();
         setStartTime(currentTime);
         setPlantStatus("growing");
-        
+
         savePlantToLocalStorage(plant, currentTime);
     };
 
@@ -162,24 +181,24 @@ function Gamble() {
 
         // Set collecting flag
         setIsCollecting(true);
-        
+
         // Try to get plant data either from state or localStorage
         const plantType = selectedPlant?.type || localStorage.getItem('plantType');
         const plantRarity = selectedPlant?.rarity || localStorage.getItem('plantRarity');
         const plantId = selectedPlant?.id || localStorage.getItem('plantId');
-        
+
         if (!plantType || !plantRarity || !user?.jwt || !gameData?.id) {
             alert("Missing plant data for collection. Please refresh and try again.");
             setIsCollecting(false);
             return;
         }
-        
+
         try {
             // Immediately change plant status to prevent additional clicks
             setPlantStatus("collecting");
             setButtonText("");
             setTimerValue("");
-            
+
             await axios.post(`${API_BASE_URL}/user-plants`, {
                 data: {
                     type: plantType,
@@ -225,13 +244,13 @@ function Gamble() {
     // Update the growth stage based on elapsed time
     const updateGrowthStage = (elapsedTime) => {
         if (growthStages.length <= 1) return;
-        
+
         const progress = elapsedTime / growthTime;
         const stageIndex = Math.min(
             Math.floor(progress * (growthStages.length - 1)),
             growthStages.length - 2 // Never reach the final stage until ready
         );
-        
+
         const newStage = growthStages[stageIndex];
         if (newStage) {
             setCurrentGrowthStage(newStage);
@@ -242,24 +261,24 @@ function Gamble() {
     // Timer effect to update plant growth
     useEffect(() => {
         if (plantStatus !== "growing" || startTime <= 0) return;
-        
+
         const interval = setInterval(() => {
             const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
             const remainingTime = growthTime - elapsedTime;
-            
+
             if (remainingTime <= 0) {
                 // Plant is ready
                 clearInterval(interval);
                 setPlantStatus("ready");
                 setButtonText(" ");
                 setTimerValue("Collect");
-                
+
                 // Show final image when ready
                 if (finalImage) {
                     setCurrentGrowthStage(finalImage);
                     localStorage.setItem('currentGrowthStage', finalImage);
                 }
-                
+
                 localStorage.setItem('plantStatus', 'ready');
             } else {
                 // Plant is still growing
@@ -267,7 +286,7 @@ function Gamble() {
                 updateGrowthStage(elapsedTime);
             }
         }, 1000);
-        
+
         return () => clearInterval(interval);
     }, [plantStatus, growthTime, startTime, growthStages, finalImage]);
 
@@ -275,12 +294,12 @@ function Gamble() {
     useEffect(() => {
         const restorePlantState = () => {
             const savedStatus = localStorage.getItem('plantStatus');
-            
+
             if (!savedStatus || savedStatus === 'idle') {
                 setPlantStatus("idle");
                 return;
             }
-            
+
             // Restore growth stages and images
             const savedStagesStr = localStorage.getItem('growthStages');
             if (savedStagesStr) {
@@ -291,49 +310,49 @@ function Gamble() {
                     console.error("Error parsing growth stages:", e);
                 }
             }
-            
+
             const savedFinalImage = localStorage.getItem('finalImage');
             if (savedFinalImage) {
                 setFinalImage(savedFinalImage);
             }
-            
+
             const savedCurrentStage = localStorage.getItem('currentGrowthStage');
             if (savedCurrentStage) {
                 setCurrentGrowthStage(savedCurrentStage);
             }
-            
+
             const savedGrowthTime = localStorage.getItem('growthTime');
             if (savedGrowthTime) {
                 setGrowthTime(Number(savedGrowthTime));
             }
-            
+
             // Handle different states
             if (savedStatus === "choosing") {
                 setPlantStatus("choosing");
                 return;
             }
-            
+
             const savedStartTime = localStorage.getItem('plantStartTime');
             if (savedStatus === "growing" && savedStartTime && savedGrowthTime) {
                 const startTimeValue = Number(savedStartTime);
                 const growthTimeValue = Number(savedGrowthTime);
-                
+
                 setStartTime(startTimeValue);
-                
+
                 // Check if plant should already be ready
                 const elapsedTime = Math.floor((Date.now() - startTimeValue) / 1000);
                 const remainingTime = growthTimeValue - elapsedTime;
-                
+
                 if (remainingTime <= 0) {
                     // Plant should be ready
                     setPlantStatus("ready");
                     setButtonText(" ");
                     setTimerValue("Collect");
-                    
+
                     if (savedFinalImage) {
                         setCurrentGrowthStage(savedFinalImage);
                     }
-                    
+
                     localStorage.setItem('plantStatus', 'ready');
                 } else {
                     // Plant still growing
@@ -346,7 +365,7 @@ function Gamble() {
                 setPlantStatus("ready");
                 setButtonText(" ");
                 setTimerValue("Collect");
-                
+
                 if (savedFinalImage) {
                     setCurrentGrowthStage(savedFinalImage);
                 }
@@ -358,7 +377,7 @@ function Gamble() {
                 setTimerValue("Plant");
             }
         };
-        
+
         restorePlantState();
     }, []);
 
@@ -367,17 +386,17 @@ function Gamble() {
         switch (plantStatus) {
             case "idle":
                 return <img src={emptyPot} className="absolute w-full h-full bottom-0 object-cover" alt="Empty pot" />;
-                
+
             case "choosing":
                 return <ChooseSeed onSelectSeed={plantSeed} />;
-                
+
             case "growing":
             case "ready":
             case "collecting":
                 return currentGrowthStage ? (
-                    <img 
-                        src={currentGrowthStage} 
-                        className="absolute bottom-0 w-full object-cover" 
+                    <img
+                        src={currentGrowthStage}
+                        className="absolute bottom-0 w-full object-cover"
                         alt={`Plant at ${plantStatus === "ready" ? "ready" : plantStatus === "collecting" ? "collecting" : "growing"} stage`}
                         onError={(e) => {
                             console.error('Image failed to load:', e.target.src);
@@ -388,14 +407,14 @@ function Gamble() {
                         }}
                     />
                 ) : null;
-                
+
             case "collected":
                 return (
                     <div className="absolute inset-0 flex items-center justify-center z-50 -mt-60">
                         <CollectedPlantCard plantName={collectedPlant.name} />
                     </div>
                 );
-                
+
             default:
                 return null;
         }
@@ -403,24 +422,31 @@ function Gamble() {
 
     return (
         <Layout>
-            <div>
-                {user?.user ? (
-                    <div className='bg-[#D6E0B9] flex justify-center'>
-                        <h1 className='text-[#546c4c] w-[40%] text-center !pt-[.25em] !text-3xl font-["Kreon"]'>
-                            {user.user.username}&apos;s Window
-                        </h1>
+            <div className='py-8'>
+                {(isCollecting || loading) && (
+                    <div className="fixed inset-0 p-5 flex items-center shadow-md justify-center z-150 bg-white/30 rounded-3xl transition-all duration-500 ease-in-out">
+                        <img src={loadingGif} alt="" className='shadow-2xl rounded-2xl w-85' />
                     </div>
-                ) : (
-                    <h1>Not logged in</h1>
                 )}
-            </div>
+                <div>
+                    {user?.user ? (
+                        <div className='bg-[#D6E0B9] flex justify-center'>
+                            <h1 className='text-[#546c4c] w-[40%] text-center !pt-[.25em] !text-3xl font-["Kreon"]'>
+                                {user.user.username}&apos;s Window
+                            </h1>
+                        </div>
+                    ) : (
+                        <h1>Not logged in</h1>
+                    )}
+                </div>
 
-            <div className="relative w-full h-full">
-                {buttonText && plantStatus !== "collecting" && plantStatus !== "collected" && (
-                    <Timer timeleft={timerValue} onClick={handleAction} />
-                )}
-                <img src={gambleBackground} className="h-full object-cover" alt="Window background" />
-                {renderPlant()}
+                <div className="relative w-full h-full">
+                    {buttonText && plantStatus !== "collecting" && plantStatus !== "collected" && (
+                        <Timer timeleft={timerValue} onClick={handleAction} />
+                    )}
+                    <img src={gambleBackground} className="h-full object-cover" alt="Window background" />
+                    {renderPlant()}
+                </div>
             </div>
         </Layout>
     );

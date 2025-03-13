@@ -1,35 +1,36 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '../Layout';
-import {useAuth} from '../AuthContext';
+import { useAuth } from '../AuthContext';
 import './test.css';
 import axios from 'axios';
 import collectionBackground from '../assets/img/collection.png';
+import loadingGif from '../assets/loadingGif.gif'
 
 export default function Collection() {
-  const {user} = useAuth();
+  const { user } = useAuth();
   const [userPlants, setUserPlants] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Plant positions on the shelves
   const plantPositions = [
-    {top: '3.7%', left: '-0.95%'}, // left shelf 1
-    {top: '3.7%', left: '8.98%'}, // left shelf 2
-    {top: '3.7%', left: '70.95%'}, // right shelf 1
-    {top: '3.7%', left: '83%'}, // right shelf 2
-    {top: '36.42%', left: '4.08%'}, // left stool
-    {top: '36.42%', left: '75.87%'}, // right stool
-    {top: '10.3%', left: '40%'}, // top shelf 1
-    {top: '10.3%', left: '51.5%'}, // top shelf 2
-    {top: '35.89%', left: '28.45%'}, // middle shelf 1
-    {top: '35.89%', left: '40%'}, // middle shelf 2
-    {top: '35.89%', left: '51.5%'}, // middle shelf 3
-    {top: '59.78%', left: '28.45%'}, // bottom shelf 1
-    {top: '59.78%', left: '40%'}, // bottom shelf 2
-    {top: '59.78%', left: '51.5%'}, // bottom shelf 3
+    { top: '3.7%', left: '-0.95%' }, // left shelf 1
+    { top: '3.7%', left: '8.98%' }, // left shelf 2
+    { top: '3.7%', left: '70.95%' }, // right shelf 1
+    { top: '3.7%', left: '83%' }, // right shelf 2
+    { top: '36.42%', left: '4.08%' }, // left stool
+    { top: '36.42%', left: '75.87%' }, // right stool
+    { top: '10.3%', left: '40%' }, // top shelf 1
+    { top: '10.3%', left: '51.5%' }, // top shelf 2
+    { top: '35.89%', left: '28.45%' }, // middle shelf 1
+    { top: '35.89%', left: '40%' }, // middle shelf 2
+    { top: '35.89%', left: '51.5%' }, // middle shelf 3
+    { top: '59.78%', left: '28.45%' }, // bottom shelf 1
+    { top: '59.78%', left: '40%' }, // bottom shelf 2
+    { top: '59.78%', left: '51.5%' }, // bottom shelf 3
   ];
 
   // Fetch user's plants with the linked Plant data
@@ -76,12 +77,12 @@ export default function Collection() {
     if (!plant || !plant.image || !Array.isArray(plant.image)) {
       return null;
     }
-    
+
     // Find the collection image
-    const collectionImage = plant.image.find(img => 
+    const collectionImage = plant.image.find(img =>
       img && img.name && img.name.includes('collection') || img.name.includes('final')
     );
-    
+
     return collectionImage ? collectionImage.url : null;
   };
 
@@ -89,9 +90,9 @@ export default function Collection() {
   const renderPlants = () => {
     if (isLoading) {
       return (
-        <p className="text-center text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          Loading your plants...
-        </p>
+        <div className="fixed inset-0 p-5 flex items-center shadow-md justify-center z-50 bg-white/30 rounded-3xl transition-all duration-500 ease-in-out">
+          <img src={loadingGif} alt="Loading..." className='shadow-2xl rounded-2xl w-85' />
+        </div>
       );
     }
 
@@ -105,19 +106,25 @@ export default function Collection() {
 
     if (!userPlants.length) {
       return (
-        <p className="text-center text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          No plants collected yet.
-        </p>
+        <Layout>
+          <div className="relative w-full h-full my-8">
+            <img
+              src={collectionBackground}
+              className="h-full object-cover"
+              alt="Collection Background"
+            />
+          </div>
+        </Layout>
       );
     }
 
     return userPlants.slice(0, 14).map((userPlant, index) => {
       // Skip rendering if position index exceeds available positions
       if (index >= plantPositions.length) return null;
-      
+
       const plant = userPlant.plant;
       if (!plant) return null;
-      
+
       const imageUrl = getCollectionImageUrl(plant);
       const position = plantPositions[index];
 
@@ -146,7 +153,7 @@ export default function Collection() {
 
   return (
     <Layout>
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full my-8">
         <img
           src={collectionBackground}
           className="h-full object-cover"

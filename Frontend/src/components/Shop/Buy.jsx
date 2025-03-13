@@ -4,6 +4,7 @@ import { useAuth } from '../../AuthContext';
 import commonSeed from '../../assets/commonSeeds.svg';
 import uncommonSeed from '../../assets/uncommonSeeds.svg';
 import rareSeed from '../../assets/rareSeeds.svg';
+import loadingGif from '../../assets/loadingGif.gif'
 import axios from 'axios';
 
 function Buy({ money, setMoney, commonSeeds, setCommonSeeds,
@@ -19,38 +20,40 @@ function Buy({ money, setMoney, commonSeeds, setCommonSeeds,
     const [uncommonSeedDocId, setUncommonSeedDocId] = useState(null);
     const [rareSeedDocId, setRareSeedDocId] = useState(null);
     const [userDocId, setUserDocId] = useState(null);
-    const [isBuying, setIsBuying] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const fetchUserData = async () => {
         try {
             const response = await axios.get(
-                `https://houseplanter-backend.onrender.com/api/user-game-datas?filters[user][id][$eq]=${user.user.id}&populate=inventory_items`, 
+                `https://houseplanter-backend.onrender.com/api/user-game-datas?filters[user][id][$eq]=${user.user.id}&populate=inventory_items`,
                 {
                     headers: {
                         Authorization: `Bearer ${user.jwt}`,
                     }
                 }
             );
-    
+
             const data = response.data.data[0];
             setMoney(data.money);
             setUserDocId(data.documentId);
-    
+
             const inventoryItems = data.inventory_items || [];
-    
+
             let commonSeed = inventoryItems.find(item => item.itemName === "CommonSeed");
             let uncommonSeed = inventoryItems.find(item => item.itemName === "UncommonSeed");
             let rareSeed = inventoryItems.find(item => item.itemName === "RareSeed");
-    
+
             if (commonSeed) setCommonSeedDocId(commonSeed.documentId);
             if (uncommonSeed) setUncommonSeedDocId(uncommonSeed.documentId);
             if (rareSeed) setRareSeedDocId(rareSeed.documentId);
-    
+
             setCommonSeeds(commonSeed ? commonSeed.quantity : 0);
             setUncommonSeeds(uncommonSeed ? uncommonSeed.quantity : 0);
             setRareSeeds(rareSeed ? rareSeed.quantity : 0);
-    
+
             const createSeedIfMissing = async (seedType) => {
+                if (loading) return;
+                setLoading(true);
                 const existingSeed = inventoryItems.find(item => item.itemName === seedType);
                 if (!existingSeed) {
                     try {
@@ -71,7 +74,7 @@ function Buy({ money, setMoney, commonSeeds, setCommonSeeds,
                                 },
                             }
                         );
-    
+
                         return postResponse.data.data.documentId;
                     } catch (postError) {
                         console.error(`Error creating ${seedType}:`, postError);
@@ -80,53 +83,55 @@ function Buy({ money, setMoney, commonSeeds, setCommonSeeds,
                 }
                 return existingSeed.documentId;
             };
-    
+
             const commonId = await createSeedIfMissing("CommonSeed");
             const uncommonId = await createSeedIfMissing("UncommonSeed");
             const rareId = await createSeedIfMissing("RareSeed");
-    
+
             if (!commonSeedDocId && commonId) setCommonSeedDocId(commonId);
             if (!uncommonSeedDocId && uncommonId) setUncommonSeedDocId(uncommonId);
             if (!rareSeedDocId && rareId) setRareSeedDocId(rareId);
-    
+
             const updatedResponse = await axios.get(
-                `https://houseplanter-backend.onrender.com/api/user-game-datas?filters[user][id][$eq]=${user.user.id}&populate=inventory_items`, 
+                `https://houseplanter-backend.onrender.com/api/user-game-datas?filters[user][id][$eq]=${user.user.id}&populate=inventory_items`,
                 {
                     headers: {
                         Authorization: `Bearer ${user.jwt}`,
                     }
                 }
             );
-    
+
             const updatedData = updatedResponse.data.data[0];
             const updatedInventory = updatedData.inventory_items || [];
-    
+
             setCommonSeeds(updatedInventory.find(item => item.itemName === "CommonSeed")?.quantity || 0);
             setUncommonSeeds(updatedInventory.find(item => item.itemName === "UncommonSeed")?.quantity || 0);
             setRareSeeds(updatedInventory.find(item => item.itemName === "RareSeed")?.quantity || 0);
-    
+
         } catch (error) {
             console.error("Error fetching user data:", error);
+        } finally {
+            setLoading(false);
         }
     };
-    
-    
+
+
     const hasFetchedData = useRef(false);
 
     useEffect(() => {
         const fetchData = async () => {
             if (hasFetchedData.current) return;
             hasFetchedData.current = true;
-    
+
             await fetchUserData();
         };
-    
+
         fetchData();
     }, []);
 
     const handleBuy = async (type) => {
-        if (isBuying) return;
-        setIsBuying(true);
+        if (loading) return;
+        setLoading(true);
 
         try {
             let newMoney = money;
@@ -174,12 +179,17 @@ function Buy({ money, setMoney, commonSeeds, setCommonSeeds,
         } catch (error) {
             console.error("Error purchasing seed:", error);
         } finally {
-            setIsBuying(false);
+            setLoading(false);
         }
     };
 
     return (
         <div className='bg-[#ACC48B]'>
+            {(loading) && (
+                <div className="fixed inset-0 p-5 flex items-center shadow-md justify-center z-150 bg-white/30 rounded-3xl transition-all duration-500 ease-in-out">
+                    <img src={loadingGif} alt="" className='shadow-2xl rounded-2xl w-85' />
+                </div>
+            )}
             <div className='py-[.5em] mb-[1em]'>
                 {[{
                     type: "common",
@@ -208,8 +218,8 @@ function Buy({ money, setMoney, commonSeeds, setCommonSeeds,
                             </div>
                             <div className='flex justify-between'>
                                 <p className='ml-2 text-xl font-bold font-["Kreon"] mt-auto'>In Stock</p>
-                                <div className={`flex cursor-pointer justify-end mt-auto ml-auto w-30 ${isBuying ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                    onClick={!isBuying ? () => handleBuy(type) : null}>
+                                <div className={`flex cursor-pointer justify-end mt-auto ml-auto w-30 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    onClick={!loading ? () => handleBuy(type) : null}>
                                     <img src={buyButton} alt="Buy" />
                                 </div>
                             </div>
