@@ -2,8 +2,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import Layout from '../Layout';
-import bgGrid from '../assets/svg/background-checks.svg';
-import StyledText from '../components/StyledText';
 import bgBook from '../assets/img/infobackground.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faDroplet} from '@fortawesome/free-solid-svg-icons';
@@ -49,8 +47,6 @@ export default function PlantInfo () {
     lightNeeds,
     specialFeatures,
     description,
-    uses,
-    nativeHabitat,
     image,
   } = plant;
 
@@ -61,7 +57,7 @@ export default function PlantInfo () {
   return (
     <Layout>      
         <div
-          className="rounded-[9px] relative mt-8 mb-8 flex flex-col items-center scale-100 overflow-hidden h-[70vh]"
+          className="rounded-[9px] relative mt-8 mb-8 flex flex-col items-center scale-100 overflow-hidden"
           style={{
             backgroundPosition: 'center',
             backgroundColor: "#D6E0B9",
@@ -92,7 +88,7 @@ export default function PlantInfo () {
               </div>
 
               {/* page 2: description and requirements */}
-              <div className="relative h-[90%] align-middle">
+              <div className="relative align-middle">
                 <div className="mt-[4%] mb-[2%] text-[200%] text-[#316e54] font-['Fredoka'] font-semibold text-center">
                     Description
                 </div>
@@ -100,7 +96,7 @@ export default function PlantInfo () {
                 <div className="mt-[4%] mb-[2%] text-[200%] text-[#316e54] font-['Fredoka'] font-semibold text-center">
                     Care Details
                 </div>
-                <ul className="text-center justify-center text-[#6c9251] text-[120%]/[200%] font-['DM Sans'] font-semibold p-[5%]">
+                <ul className="text-center justify-center text-[#6c9251] text-[120%]/[200%] font-['DM Sans'] font-semibold ">
                   <li><FontAwesomeIcon icon={faDroplet}/> Water: {waterNeeds}</li>
                   <li><FontAwesomeIcon icon={faSun}/> Light: {lightNeeds}</li>
                   <li><FontAwesomeIcon icon={faTemperatureQuarter}/> Climate: {specialFeatures}</li>

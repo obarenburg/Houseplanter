@@ -6,7 +6,7 @@ import Layout from '../Layout';
 import {useAuth} from '../AuthContext';
 import './test.css';
 import axios from 'axios';
-import collectionBackground from '../assets/img/editcollection.png';
+import collectionBackground from '../assets/img/collection.png';
 
 export default function Collection() {
   const {user} = useAuth();
