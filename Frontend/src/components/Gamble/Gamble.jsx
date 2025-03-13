@@ -28,6 +28,7 @@ function Gamble() {
     const [startTime, setStartTime] = useState(0);
     const [timerValue, setTimerValue] = useState("Plant");
     const [buttonText, setButtonText] = useState("Plant");
+    const [isCollecting, setIsCollecting] = useState(false);
 
     // plant data
     const [selectedPlant, setSelectedPlant] = useState(null);
@@ -154,6 +155,14 @@ function Gamble() {
     };
 
     const collectPlant = async () => {
+        // Prevent multiple collects
+        if (isCollecting || plantStatus === "collected") {
+            return;
+        }
+
+        // Set collecting flag
+        setIsCollecting(true);
+        
         // Try to get plant data either from state or localStorage
         const plantType = selectedPlant?.type || localStorage.getItem('plantType');
         const plantRarity = selectedPlant?.rarity || localStorage.getItem('plantRarity');
@@ -161,10 +170,16 @@ function Gamble() {
         
         if (!plantType || !plantRarity || !user?.jwt || !gameData?.id) {
             alert("Missing plant data for collection. Please refresh and try again.");
+            setIsCollecting(false);
             return;
         }
         
         try {
+            // Immediately change plant status to prevent additional clicks
+            setPlantStatus("collecting");
+            setButtonText("");
+            setTimerValue("");
+            
             await axios.post(`${API_BASE_URL}/user-plants`, {
                 data: {
                     type: plantType,
@@ -189,15 +204,22 @@ function Gamble() {
         } catch (error) {
             console.error("Error collecting plant:", error.response?.data || error);
             alert("Failed to collect plant. Please try again.");
+            // Revert status if collection fails
+            setPlantStatus("ready");
+            setButtonText(" ");
+            setTimerValue("Collect");
+        } finally {
+            setIsCollecting(false);
         }
     };
 
     const handleAction = () => {
         if (plantStatus === "idle") {
             chooseSeed();
-        } else if (plantStatus === "ready") {
+        } else if (plantStatus === "ready" && !isCollecting) {
             collectPlant();
         }
+        // Do nothing if already collecting or collected
     };
 
     // Update the growth stage based on elapsed time
@@ -351,11 +373,12 @@ function Gamble() {
                 
             case "growing":
             case "ready":
+            case "collecting":
                 return currentGrowthStage ? (
                     <img 
                         src={currentGrowthStage} 
                         className="absolute bottom-0 w-full object-cover" 
-                        alt={`Plant at ${plantStatus === "ready" ? "ready" : "growing"} stage`}
+                        alt={`Plant at ${plantStatus === "ready" ? "ready" : plantStatus === "collecting" ? "collecting" : "growing"} stage`}
                         onError={(e) => {
                             console.error('Image failed to load:', e.target.src);
                             const savedStage = localStorage.getItem('currentGrowthStage');
@@ -393,7 +416,9 @@ function Gamble() {
             </div>
 
             <div className="relative w-full h-full">
-                {buttonText && <Timer timeleft={timerValue} onClick={handleAction} />}
+                {buttonText && plantStatus !== "collecting" && plantStatus !== "collected" && (
+                    <Timer timeleft={timerValue} onClick={handleAction} />
+                )}
                 <img src={gambleBackground} className="h-full object-cover" alt="Window background" />
                 {renderPlant()}
             </div>
